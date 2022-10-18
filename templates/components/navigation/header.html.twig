@@ -1,0 +1,28 @@
+<header>
+    <nav class="navbar navbar-dark bg-dark navbar-expand-md justify-content-center">
+        <div class="container">
+            <a href="{{  path('main') }}" class="navbar-brand d-flex me-auto">
+                <strong>Oxford Dictionary</strong>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsingNavbar3">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse w-100" id="collapsingNavbar3">
+                <ul class="nav navbar-nav ms-auto w-100 justify-content-end">
+                    <li class="nav-item dropdown">
+                        <button type="button"
+                                class="btn btn-secondary dropdown-toggle"
+                                data-bs-toggle="dropdown"
+                                data-bs-display="static"
+                                aria-expanded="false"
+                        > Auth </button>
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start" aria-labelledby="navbarScrollingDropdown">
+                            <li><a class="dropdown-item" href="#/login">Sign In</a></li>
+                            <li><a class="dropdown-item" href="#/register">Sign Up</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
