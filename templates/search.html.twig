@@ -11,6 +11,8 @@
             {% include 'sections/history.html.twig' %}
         </div>
     </div>
-    {% include 'sections/pronunciations.html.twig' %}
+    {% if result %}
+        {% include 'sections/pronunciations.html.twig' %}
+    {% endif %}
     {% include 'sections/tag-clouds.html.twig' %}
 {% endblock %}
