@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\SearchFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,6 +15,10 @@ class MainPageController extends AbstractController
     #[Route('/', methods: ['GET'], name: 'main')]
     public function __invoke(): Response
     {
-        return $this->render('main.html.twig');
+        $form = $this->createForm(SearchFormType::class);
+
+        return $this->render('main.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }

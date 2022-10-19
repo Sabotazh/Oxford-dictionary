@@ -1,7 +1,11 @@
 <h3>Definitions</h3>
 
 <ul class="list-group list-group-flush">
-    {% include 'elements/definition.html.twig' with {'title': 'Definition 1', 'id': 1} %}
-    {% include 'elements/definition.html.twig' with {'title': 'Definition 2', 'id': 2} %}
-    {% include 'elements/definition.html.twig' with {'title': '...', 'id': 3} %}
+    {% if result %}
+        {% include 'elements/definition.html.twig' with {'title': 'Definition 1', 'id': 1} %}
+        {% include 'elements/definition.html.twig' with {'title': 'Definition 2', 'id': 2} %}
+        {% include 'elements/definition.html.twig' with {'title': '...', 'id': 3} %}
+    {% else %}
+        No definitions
+    {% endif %}
 </ul>
