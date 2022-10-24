@@ -22,3 +22,12 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    GuzzleHttp\Client: ~
+    App\Builder\OxfordEntryBuilder: ~
+
+    App\Client\OxfordClient:
+        arguments:
+            $baseUrl: 'https://od-api.oxforddictionaries.com/api/v2'
+            $appId: '%env(OXFORD_API_ID)%'
+            $appKey: '%env(OXFORD_API_KEY)%'
