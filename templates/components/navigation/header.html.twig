@@ -18,7 +18,12 @@
                         >{% if app.user %} {{ app.user.userIdentifier }} {% else %} Auth {% endif%}</button>
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start" aria-labelledby="navbarScrollingDropdown">
                             {% if app.user %}
-                                <li><a class="dropdown-item" href="{{ path('profile') }}">Profile</a></li>
+                                {% if app.user.isAdmin %}
+                                    <li><a class="dropdown-item" href="{{ path('dashboard') }}">Dashboard</a></li>
+                                {% else %}
+                                    <li><a class="dropdown-item" href="{{ path('profile') }}">Profile</a></li>
+                                {% endif%}
+                                <li><a class="dropdown-item" href="{{ path('favorites') }}">Favorites</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a></li>
                             {% else %}
