@@ -11,6 +11,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Table(name: '`user`')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    public const ROLE_USER = 'ROLE_USER';
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -30,6 +33,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column(type: 'string')]
     private string $password;
+
+    /**
+     * @var datetime $createdAt
+     */
+    #[ORM\Column(name: 'created_at', type: 'datetime')]
+    private $createdAt;
+
+    /**
+     * @var datetime $updatedAt
+     */
+    #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
+    private $updatedAt;
+
+    /**
+     * @var datetime $deletedAt
+     */
+    #[ORM\Column(name: 'deleted_at', type: 'datetime', nullable: true)]
+    private $deletedAt;
 
     public function getId(): ?int
     {
@@ -77,7 +98,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $roles[] = self::ROLE_USER;
 
         return array_unique($roles);
     }
@@ -87,6 +108,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->roles = $roles;
 
         return $this;
+    }
+
+    public function isUser(): bool
+    {
+        return in_array(self::ROLE_USER, $this->roles);
+    }
+
+    public function isAdmin(): bool
+    {
+        return in_array(self::ROLE_ADMIN, $this->roles);
     }
 
     /**
@@ -100,6 +131,51 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @return datetime
+     */
+    public function getCreatedAt(): string
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(): self
+    {
+        $this->createdAt = new \DateTime('now');
+
+        return $this;
+    }
+
+    /**
+     * @return datetime
+     */
+    public function getUpdatedAt(): string
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(): self
+    {
+        $this->updatedAt = new \DateTime('now');
+
+        return $this;
+    }
+
+    /**
+     * @return datetime
+     */
+    public function getDeletedAt(): string
+    {
+        return $this->deletedAt;
+    }
+
+    public function setDeleteddAt(): self
+    {
+        $this->deletedAt = new \DateTime('now');
 
         return $this;
     }

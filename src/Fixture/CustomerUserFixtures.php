@@ -27,10 +27,12 @@ class CustomerUserFixtures extends Fixture
         $user = new User();
         $user->setEmail('user@mail.com')
             ->setName('User')
-            ->setRoles(['ROLE_USER'])
+            ->setRoles([User::ROLE_USER])
             ->setPassword(
                 $this->hasher->hashPassword($user, 'secret')
-            );
+            )
+            ->setCreatedAt()
+            ->setUpdatedAt();
 
         $this->repository->save($user, true);
     }
