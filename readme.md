@@ -6,6 +6,8 @@ Run:
 
 ```bash
 composer update --no-interaction --no-ansi
+yarn install
+yarn encore dev
 ```
 
 Create two files in your project root directory:
@@ -35,7 +37,14 @@ php bin/console doctrine:database:create
 php bin/console doctrine:schema:update --force
 ```
 
-Include test customer data:
+Make migrations:
+
+```bash
+php bin/console make:migration
+php bin/console doctrine:migrations:migrate
+```
+
+Include test customer data (fixture):
 
 ```bash
 php bin/console doctrine:fixtures:load
@@ -47,4 +56,18 @@ Customer auth test data:
 ```
 log: user@mail.com
 pas: secret
+```
+
+Update migrations:
+
+```bash
+php bin/console doctrine:database:drop --force
+php bin/console doctrine:database:create
+php bin/console doctrine:migrations:migrate
+  > yes
+php bin/console make:migration
+php bin/console doctrine:migrations:migrate
+  > yes
+php bin/console doctrine:fixtures:load
+  > yes
 ```
