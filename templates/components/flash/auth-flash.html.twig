@@ -1,0 +1,24 @@
+{% if app.session.flashbag.has('errors') %}
+    <div class="alert alert-danger" role="alert">
+        {% for message in app.session.flashbag.get('errors') %}
+            {% for type, errors in message %}
+                <div class="row">
+                    <div class="col">
+                        <strong>{{ type|capitalize }}:</strong>
+                        <ul>
+                            {% for error in errors %}
+                                {% if error is iterable %}
+                                    {% for suberror in error %}
+                                        <li>{{ suberror }}</li>
+                                    {% endfor %}
+                                {% else %}
+                                    <li>{{ error }}</li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+{% endif %}

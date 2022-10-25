@@ -25,7 +25,6 @@ class RegistrationFormType extends AbstractType
                 'constraints' => [
                     new Email(),
                     new Length(null, 3, 255),
-                    // ToDo valid unique email
                 ],
                 'attr'  => [
                     'class'         => 'form-control-lg',

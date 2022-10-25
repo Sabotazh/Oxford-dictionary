@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use App\Security\LoginFormAuthenticator;
+use App\Service\FormErrors;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -61,8 +62,13 @@ class RegistrationController extends AbstractController
             return $authenticator->authenticateUser(
                 $user,
                 $formAuthenticator,
-                $request);
+                $request
+            );
         }
+
+        $errors = FormErrors::getErrors($form);
+
+        $this->addFlash('errors', $errors);
 
         return $this->redirectToRoute('app_registration');
     }
