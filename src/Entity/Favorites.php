@@ -17,8 +17,8 @@ class Favorites
     #[ORM\Column(type: 'integer')]
     private ?int $user_id = null;
 
-    #[ORM\Column(type: 'integer')]
-    private ?int $word_id = null;
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
+    private ?string $word_id = null;
 
     #[ORM\Column(type: 'integer')]
     private ?int $count = null;
@@ -58,12 +58,12 @@ class Favorites
         return $this;
     }
 
-    public function getWordId(): ?int
+    public function getWordId(): ?string
     {
         return $this->word_id;
     }
 
-    public function setWordId(int $word_id): self
+    public function setWordId(string $word_id): self
     {
         $this->word_id = $word_id;
 

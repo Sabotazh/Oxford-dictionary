@@ -3,8 +3,20 @@
         <div class="col-sm-6">
             {{ form_row(form.search) }}
         </div>
-        <div class="col-sm-2">
+        <div class="col-sm-1">
             {{ form_row(form.submit) }}
+        </div>
+        <div class="col-sm-1">
+            {% if app.request.get('_route') == 'search.result' and app.user %}
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="right"
+                    title="Save to your favourites"
+                    id="save-to-favorite"
+                ><i class="fa-solid fa-plus"></i></button>
+            {% endif %}
         </div>
     </div>
 {{ form_end(form) }}
