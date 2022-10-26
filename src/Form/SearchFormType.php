@@ -33,7 +33,7 @@ class SearchFormType extends AbstractType
             ->add('submit', SubmitType::class, [
                 'label' => 'Search',
                 'attr'  => [
-                    'class' => 'btn-success mb-2'
+                    'class' => 'btn-success mb-2 w-100'
                 ],
             ]);
     }
