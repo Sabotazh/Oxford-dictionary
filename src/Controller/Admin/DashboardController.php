@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Controller\User;
+namespace App\Controller\Admin;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class UserProfileController extends AbstractController
+class DashboardController extends AbstractController
 {
     /**
      * @return Response
      */
-    #[Route('user/profile', name: 'profile')]
+    #[Route('/admin/dashboard', methods: ['GET'], name: 'dashboard')]
     public function __invoke(): Response
     {
-        return $this->render('profile.html.twig');
+        return $this->render('pages/admin/dashboard.html.twig');
     }
 }

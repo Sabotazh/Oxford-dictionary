@@ -69,6 +69,6 @@ class SearchController extends AbstractController
             $renderParam['errors'][] = $exception->getMessage();
         }
 
-        return $this->render('search.html.twig', $renderParam);
+        return $this->render('pages/search.html.twig', $renderParam);
     }
 }
