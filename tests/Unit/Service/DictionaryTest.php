@@ -2,35 +2,34 @@
 
 namespace App\Tests\Unit\Service;
 
+use App\Builder\OxfordEntryBuilder;
+use App\Client\OxfordClient;
 use App\Exception\DictionaryException;
-use App\Factory\BuilderFactory;
-use App\Factory\ClientFactory;
-use App\Factory\Contracts\FactoryInterface;
 use App\Service\Dictionary;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use App\Tests\Unit\Service\Data\OxfordResponseData;
+use App\Type\JsonType;
+use GuzzleHttp\Exception\TransferException;
+use PHPUnit\Framework\TestCase;
 
-class DictionaryTest extends KernelTestCase
+class DictionaryTest extends TestCase
 {
-    private FactoryInterface $clientFactory;
-    private FactoryInterface $builderFactory;
-
-    protected function setUp(): void
-    {
-        self::bootKernel();
-
-        $this->clientFactory = static::getContainer()->get(ClientFactory::class);
-        $this->builderFactory = static::getContainer()->get(BuilderFactory::class);
-    }
-
     /**
-     * @dataProvider positiveDataProvider
+     * @dataProvider dataProvider
      */
-    public function testGetDefinitionsAndPronunciations($input): void
+    public function testGetDefinitionsAndPronunciations(array $input): void
     {
-        [$provider, $lang, $word] = $input;
+        [$lang, $word] = $input;
 
-        $client = $this->clientFactory->create($provider);
-        $entityBuilder = $this->builderFactory->create($provider);
+        $endPoint = sprintf('/entries/%s/%s', $lang, $word);
+        $response = new OxfordResponseData();
+
+        $client = \Mockery::mock(OxfordClient::class);
+        $client
+            ->shouldReceive('getData')
+            ->with($endPoint)
+            ->andReturn(new JsonType(json_encode($response)));
+
+        $entityBuilder = new OxfordEntryBuilder();
 
         $dictionary = new Dictionary($client, $entityBuilder);
         $result = $dictionary->getEnteries($lang, $word);
@@ -40,39 +39,82 @@ class DictionaryTest extends KernelTestCase
     }
 
     /**
-     * @dataProvider negativeDataProvider
+     * @dataProvider dataProvider
      */
-    public function testGetNoResult($input): void
+    public function testGetOnlyDefinitions(array $input): void
     {
-        [$provider, $lang, $word] = $input;
+        [$lang, $word] = $input;
 
-        $client = $this->clientFactory->create($provider);
-        $entityBuilder = $this->builderFactory->create($provider);
+        $endPoint = sprintf('/entries/%s/%s', $lang, $word);
+        $response = new OxfordResponseData();
 
+        $client = \Mockery::mock(OxfordClient::class);
+        $client
+            ->shouldReceive('getData')
+            ->with($endPoint)
+            ->andReturn(new JsonType(json_encode($response->withoutPronansiations())));
+
+        $entityBuilder = new OxfordEntryBuilder();
+
+        $dictionary = new Dictionary($client, $entityBuilder);
+        $result = $dictionary->getEnteries($lang, $word);
+
+        $this->assertNotEmpty($result->getDefinitions());
+        $this->assertEmpty($result->getPronansiations());
+    }
+
+    /**
+     * @dataProvider dataProvider
+     */
+    public function testGetNoResults(array $input): void
+    {
+        [$lang, $word] = $input;
+
+        $endPoint = sprintf('/entries/%s/%s', $lang, $word);
+        $response = new OxfordResponseData();
+
+        $client = \Mockery::mock(OxfordClient::class);
+        $client
+            ->shouldReceive('getData')
+            ->with($endPoint)
+            ->andReturn(new JsonType(json_encode($response->withoutPronansiations()->withoutDefinitions())));
+
+        $entityBuilder = new OxfordEntryBuilder();
+
+        $dictionary = new Dictionary($client, $entityBuilder);
+        $result = $dictionary->getEnteries($lang, $word);
+
+        $this->assertEmpty($result->getDefinitions());
+        $this->assertEmpty($result->getPronansiations());
+    }
+
+    /**
+     * @dataProvider dataProvider
+     */
+    public function testThrowsDictionaryException(array $input): void
+    {
+        [$lang, $word] = $input;
+
+        $endPoint = sprintf('/entries/%s/%s', $lang, $word);
+
+        $client = \Mockery::mock(OxfordClient::class);
+        $client
+            ->shouldReceive('getData')
+            ->with($endPoint)
+            ->andThrowExceptions([new TransferException('', 404)]);
+
+        $entityBuilder = new OxfordEntryBuilder();
         $dictionary = new Dictionary($client, $entityBuilder);
 
         $this->expectException(DictionaryException::class);
         $dictionary->getEnteries($lang, $word);
     }
 
-    public function positiveDataProvider(): array
+    public function dataProvider(): array
     {
         return [
             [
-                ['oxford', 'en-gb', 'test'],
-                ['oxford', 'es', 'prueba'],
-                ['oxford', 'fr', 'examen'],
-            ],
-        ];
-    }
-
-    public function negativeDataProvider(): array
-    {
-        return [
-            [
-                ['oxford', 'en-gb', 'kjshkwe'],
-                ['oxford', 'es', 'wefwfwefw'],
-                ['oxford', 'fr', 'wefwfewe'],
+                ['en-gb', 'test'],
             ],
         ];
     }
