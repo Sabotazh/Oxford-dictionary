@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\User;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,17 +31,17 @@ class FavoritesController extends AbstractController
     /**
      * @return Response
      */
-    #[Route('/favorites', methods: 'GET', name: 'favorites')]
+    #[Route('/user/favorites', methods: 'GET', name: 'favorites')]
     public function favorites(): Response
     {
-        return $this->render('favorites.html.twig');
+        return $this->render('pages/user/favorites.html.twig');
     }
 
     /**
      * @param Request $request
      * @return Response
      */
-    #[Route('/favorite/add', methods: 'POST', name: 'add.favorite')]
+    #[Route('/user/favorite/add', methods: 'POST', name: 'add.favorite')]
     public function addFavorite(ManagerRegistry $doctrine, Request $request): Response
     {
         $user = $this->security->getUser();
@@ -71,7 +71,7 @@ class FavoritesController extends AbstractController
         return new Response('The word was saved');
     }
 
-    #[Route('/favorites/export', methods: 'GET', name: 'export.favorites')]
+    #[Route('/user/favorites/export', methods: 'GET', name: 'export.favorites')]
     public function exportFavorites(ManagerRegistry $doctrine)
     {
         $spreadsheet = new Spreadsheet();
@@ -108,5 +108,4 @@ class FavoritesController extends AbstractController
         $response->headers->set('Cache-Control','max-age=0');
         return $response;
     }
-
 }
