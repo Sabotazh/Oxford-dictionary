@@ -35,26 +35,29 @@ class FavoritesController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    #[Route('/favorites', methods: 'POST', name: 'save.favorites')]
-    public function saveFavorites(ManagerRegistry $doctrine, Request $request): Response
+    #[Route('/favorite/add', methods: 'POST', name: 'add.favorite')]
+    public function addFavorite(ManagerRegistry $doctrine, Request $request): Response
     {
         $user = $this->security->getUser();
 
+        $data = $request->request->get('favorite');
+
         $repository = $doctrine->getRepository(Favorites::class);
-        $favorites = $repository->findOneBy(['word_id' => $request->getContent()]);
+        $favorites = $repository->findOneBy(['word_id' => $data]);
 
         if(!$favorites) {
             $favorites = new Favorites();
             $favorites->setCount(1);
             $favorites->setCreatedAt();
         } else {
-            $favorites->setCount($favorites->getCount() + 1);
+            $currentCount = $favorites->getCount();
+            $favorites->setCount(++$currentCount);
             $favorites->setUpdatedAt();
         }
 
         $entityManager = $doctrine->getManager();
 
-        $favorites->setWordId($request->getContent());
+        $favorites->setWordId($data);
         $favorites->setUserId($user->getId());
         $entityManager->persist($favorites);
         $entityManager->flush();
