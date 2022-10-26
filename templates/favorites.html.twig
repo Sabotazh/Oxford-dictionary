@@ -2,4 +2,12 @@
 
 {% block body %}
     Favorites
+    <a
+        href="/favorites/export"
+        class="btn btn-success"
+        data-bs-toggle="tooltip"
+        data-bs-placement="right"
+        title="Export your favourites to Excel"
+        id="export-favorite-to-excel"
+    ><i class="fa-solid fa-file-excel"></i></a>
 {% endblock %}
