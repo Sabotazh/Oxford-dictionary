@@ -38,7 +38,7 @@ security:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
         - { path: 'profile', roles: [IS_AUTHENTICATED_FULLY, ROLE_USER] }
-        - { path: dashboard, roles: [ROLE_ADMIN] }
+        - { path: 'dashboard', roles: [ROLE_ADMIN] }
 
 when@test:
     security:

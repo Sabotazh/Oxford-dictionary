@@ -1,20 +1,19 @@
 <div class="row">
     <div class="col-6 align-self-center mt-5">
-        <h3>{{ tag }} Tag Clouds</h3>
+        <h3>Tag Clouds</h3>
 
-        {% if tag|length > 0 %}
+        {% if tags|length > 0 %}
             {% for tag in tags %}
 
                 <div id="tags"  style="font-size: 50%">
                     <small>
-                        {{ tag.title }}
-{#                        {% include 'elements/tag.html.twig' with {'title': {{ tag.title }}|lower, 'id': {{ tag.id }}, 'size': random(200,700)/100} %}#}
+                        {% include 'elements/tag.html.twig' with {'title': tag.title|lower, 'id': tag.id, 'size': random(200,700)/100} %}
                     </small>
                 </div>
 
             {% endfor %}
         {% else %}
-            <div>No tags have been searched yet.</div>
+            <div class="mt-3">No tags have been searched yet</div>
         {% endif %}
 
     </div>

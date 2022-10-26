@@ -16,10 +16,14 @@ class MainPageController extends AbstractController
     #[Route('/', methods: ['GET'], name: 'main')]
     public function __invoke(): Response
     {
-        $form = $this->createForm(SearchFormType::class);
+        $renderParam['form'] = $this->createForm(SearchFormType::class)->createView();
 
-        return $this->render('main.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        try {
+            $renderParam['tags'] = []; // TODO include tags data
+        } catch (\Exception $exception) {
+            $renderParam['errors'][] = $exception->getMessage();
+        }
+
+        return $this->render('main.html.twig', $renderParam);
     }
 }

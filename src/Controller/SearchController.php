@@ -63,6 +63,12 @@ class SearchController extends AbstractController
             $renderParam['errors'][] = $exception->getMessage();
         }
 
+        try {
+            $renderParam['tags'] = []; // TODO include tags data
+        } catch (\Exception $exception) {
+            $renderParam['errors'][] = $exception->getMessage();
+        }
+
         return $this->render('search.html.twig', $renderParam);
     }
 }
