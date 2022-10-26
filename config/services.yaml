@@ -25,6 +25,7 @@ services:
 
     GuzzleHttp\Client: ~
     App\Builder\OxfordEntryBuilder: ~
+    Faker\Factory: ~
 
     App\Client\OxfordClient:
         arguments:
