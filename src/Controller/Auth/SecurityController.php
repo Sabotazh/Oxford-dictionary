@@ -2,6 +2,8 @@
 
 namespace App\Controller\Auth;
 
+use App\Entity\User;
+use App\Form\LoginFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,19 +18,19 @@ class SecurityController extends AbstractController
     #[Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-         if ($this->getUser()) {
-             return $this->redirectToRoute('profile');
-         }
+        if ($this->getUser()) {
+            return $this->redirectToRoute('profile');
+        }
 
-        // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
-        // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
+        $params['error'] = $authenticationUtils->getLastAuthenticationError();
+        $params['last_username'] = $authenticationUtils->getLastUsername();
 
-        return $this->render('security/login.html.twig', [
-            'last_username' => $lastUsername,
-            'error'         => $error
+        $form = $this->createForm(LoginFormType::class, new User(), [
+            'method' => 'POST',
         ]);
+        $params['form'] = $form->createView();
+
+        return $this->render('security/login.html.twig', $params);
     }
 
     #[Route(path: '/logout', name: 'app_logout')]
