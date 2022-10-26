@@ -1,9 +1,11 @@
 $('#save-to-favorite').on('click', function(e) {
     e.preventDefault();
     $.ajax({
-        url: '/favorites',
+        url: '/favorite/add',
         method: 'POST',
-        data: $('#search').val()
+        data: {
+            favorite: $('#search').val()
+        }
     }).then(() => {
         // 
     })
