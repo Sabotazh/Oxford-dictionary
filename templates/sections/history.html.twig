@@ -2,8 +2,13 @@
 
 <ul class="list-unstyled">
     {% if history|length > 0 %}
-        {% for word in history %}
-            <li><a href="{{ path('search.result', {'provider': 'oxford', 'search': word.value }) }}">{{ word.value }}</a></li>
+        {% for searched in history %}
+            <li>
+                <a href="{{ path('dictionary_search_result', {'provider': 'oxford', 'search': searched.word }) }}">
+                    {{ searched.word }}
+                </a>
+                <span class="badge rounded-pill bg-info ms-2">{{ searched.count }}</span>
+            </li>
         {% endfor %}
     {% else %}
         No history

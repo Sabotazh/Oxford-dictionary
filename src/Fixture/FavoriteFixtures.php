@@ -3,11 +3,11 @@
 namespace App\Fixture;
 
 use App\Entity\Favorite;
+use App\Entity\Search;
 use App\Entity\User;
-use App\Entity\Word;
 use App\Repository\FavoriteRepository;
+use App\Repository\SearchRepository;
 use App\Repository\UserRepository;
-use App\Repository\WordRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -18,19 +18,19 @@ class FavoriteFixtures extends Fixture implements DependentFixtureInterface
 
     private FavoriteRepository $favoriteRepository;
     private UserRepository $userRepository;
-    private WordRepository $wordRepository;
+    private SearchRepository $searcheRepository;
     private Faker $faker;
 
     public function __construct(
         FavoriteRepository $favoriteRepository,
-        UserRepository $userRepository,
-        WordRepository $wordRepository,
-        Faker $faker
+        UserRepository     $userRepository,
+        SearchRepository   $searcheRepository,
+        Faker              $faker
     )
     {
         $this->favoriteRepository = $favoriteRepository;
         $this->userRepository = $userRepository;
-        $this->wordRepository = $wordRepository;
+        $this->searcheRepository = $searcheRepository;
         $this->faker = $faker;
     }
 
@@ -40,25 +40,22 @@ class FavoriteFixtures extends Fixture implements DependentFixtureInterface
             return $user->getId();
         }, $this->userRepository->findAll());
 
-        $wordsIds = array_map(function (Word $word): int {
-            return $word->getId();
-        }, $this->wordRepository->findAll());
+        $searchesIds = array_map(function (Search $searche): int {
+            return $searche->getId();
+        }, $this->searcheRepository->findAll());
 
         for ($i = 0; $i < 100; ++$i) {
+            if (empty($searchesIds)) break;
+
             $userId = $usersIds[array_rand($usersIds)];
 
-            if (empty($wordsIds)) {
-                break;
-            }
-
-            $wordArrRandomIndex = array_rand($wordsIds);
-            $wordId = $wordsIds[$wordArrRandomIndex];
-            array_splice($wordsIds, $wordArrRandomIndex, 1);
+            $searcheArrRandomIndex = array_rand($searchesIds);
+            $searcheId = $searchesIds[$searcheArrRandomIndex];
+            array_splice($searchesIds, $searcheArrRandomIndex, 1);
 
             $favorite = new Favorite();
             $favorite->setUserId($userId)
-                ->setWordId($wordId)
-                ->setCount(0)
+                ->setWordId($searcheId)
                 ->setCreatedAt()
                 ->setUpdatedAt();
 
@@ -70,7 +67,7 @@ class FavoriteFixtures extends Fixture implements DependentFixtureInterface
     {
         return [
             'App\Fixture\UserFixtures',
-            'App\Fixture\WordFixtures',
+            'App\Fixture\SearchFixtures',
         ];
     }
 }

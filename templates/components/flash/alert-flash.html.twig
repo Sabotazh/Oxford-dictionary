@@ -1,0 +1,15 @@
+{% if app.session.flashbag.has('alert_success') %}
+    {% include 'elements/alert.html.twig' with {'type': 'success', 'message': app.session.flashbag.get('alert_success')} %}
+{% endif %}
+
+{% if app.session.flashbag.has('alert_info') %}
+    {% include 'elements/alert.html.twig' with {'type': 'info', 'message': app.session.flashbag.get('alert_info')} %}
+{% endif %}
+
+{% if app.session.flashbag.has('alert_warning') %}
+    {% include 'elements/alert.html.twig' with {'type': 'warning', 'message': app.session.flashbag.get('alert_warning')} %}
+{% endif %}
+
+{% if app.session.flashbag.has('alert_error') %}
+    {% include 'elements/alert.html.twig' with {'type': 'danger', 'message': app.session.flashbag.get('alert_error')} %}
+{% endif %}

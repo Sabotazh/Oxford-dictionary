@@ -48,6 +48,6 @@ class OxfordClient implements ClientInterface
             'Accept'    => 'application/json',
             'app_id'    => $this->appId,
             'app_key'   => $this->appKey,
-        ];;
+        ];
     }
 }

@@ -3,5 +3,12 @@
 {% block body %}
     {% include 'sections/title.html.twig' %}
     {% include 'sections/search.html.twig' %}
+    <div class="row mt-5 justify-content-between">
+        <div class="col-sm-12 col-md-6">
+        </div>
+        <div class="col-sm-12 col-md-4">
+            {% include 'sections/history.html.twig' %}
+        </div>
+    </div>
     {% include 'sections/tag-clouds.html.twig' %}
 {% endblock %}
