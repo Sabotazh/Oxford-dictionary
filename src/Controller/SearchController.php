@@ -9,7 +9,9 @@ use App\Exception\DictionaryException;
 use App\Factory\BuilderFactory;
 use App\Factory\ClientFactory;
 use App\Form\SearchFormType;
+use App\Repository\HistoryRepository;
 use App\Service\Dictionary;
+use App\Service\HistoryService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,11 +21,20 @@ class SearchController extends AbstractController
 {
     private ClientFactory $clientFactory;
     private BuilderFactory $builderFactory;
+    private HistoryService $historyService;
+    private HistoryRepository $historyRepository;
 
-    public function __construct(ClientFactory $clientFactory, BuilderFactory $builderFactory)
+    public function __construct(
+        ClientFactory $clientFactory,
+        BuilderFactory $builderFactory,
+        HistoryService $historyService,
+        HistoryRepository $historyRepository
+    )
     {
         $this->clientFactory = $clientFactory;
         $this->builderFactory = $builderFactory;
+        $this->historyService = $historyService;
+        $this->historyRepository = $historyRepository;
     }
 
     /**
@@ -36,31 +47,31 @@ class SearchController extends AbstractController
     {
         $renderParam = [];
 
-        $search = $request->query->get('search');
+        $desired = $request->query->get('search');
 
-        $renderParam['form'] = $this->createForm(SearchFormType::class, ['attr' => ['value' => $search]])
+        $renderParam['form'] = $this->createForm(SearchFormType::class, ['attr' => ['value' => $desired]])
             ->createView();
 
         try {
             $client = $this->clientFactory->create($provider);
             $entityBuilder = $this->builderFactory->create($provider);
-            $renderParam['entry'] = (new Dictionary($client, $entityBuilder))->getEnteries('en-gb', $search);
-        } catch (ClientNotFoundException $exception) {
-            $renderParam['errors'][] = $exception->getMessage();
-        } catch (BuilderNotFoundException $exception) {
-            $renderParam['errors'][] = $exception->getMessage();
-        } catch (DictionaryException $exception) {
-            $renderParam['errors'][] = $exception->getMessage();
-        } catch (ApiExecutionException $exception) {
+            $renderParam['entry'] = (new Dictionary($client, $entityBuilder))->getEnteries('en-gb', $desired);
+
+            try {
+                $this->historyService->checkWord($desired);
+            } catch (\Exception $exception) {
+                $renderParam['errors'][] = 'Some error has occurred with history.';
+            }
+        } catch (ClientNotFoundException | BuilderNotFoundException | DictionaryException | ApiExecutionException $exception) {
             $renderParam['errors'][] = $exception->getMessage();
         } catch (\Exception $exception) {
             $renderParam['errors'][] = 'Some error has occurred. Please try again or contact an administrator.';
         }
 
         try {
-            $renderParam['history'] = []; // TODO customer history
+            $renderParam['history'] = $this->historyRepository->findBy([], ['id' => 'desc'], 5);
         } catch (\Exception $exception) {
-            $renderParam['errors'][] = $exception->getMessage();
+            $renderParam['errors'][] = 'Some error has occurred with history.';
         }
 
         try {
