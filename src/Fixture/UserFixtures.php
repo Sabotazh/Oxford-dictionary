@@ -31,14 +31,15 @@ class UserFixtures extends Fixture
      */
     public function load(ObjectManager $manager): void
     {
-        for ($i = 0; $i < 10; ++$i) {
+        for ($i = 0; $i < 100; ++$i) {
             $user = new User();
-            $user->setEmail($this->faker->email())
+            $user->setEmail($this->faker->unique()->email())
                 ->setName($this->faker->name())
                 ->setRoles([User::ROLE_USER])
                 ->setPassword(
                     '$2y$13$pruD8xbAtwwZf6FHHW.I6eAxp01TSZxUGE4hiAYzbaj7NgI088RWW'
                 )
+                ->setIsBanned($this->faker->boolean())
                 ->setCreatedAt()
                 ->setUpdatedAt();
 
