@@ -10,6 +10,7 @@ use App\Factory\BuilderFactory;
 use App\Factory\ClientFactory;
 use App\Form\SearchFormType;
 use App\Repository\HistoryRepository;
+use App\Repository\TagRepository;
 use App\Service\Dictionary;
 use App\Service\HistoryService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,18 +24,21 @@ class SearchController extends AbstractController
     private BuilderFactory $builderFactory;
     private HistoryService $historyService;
     private HistoryRepository $historyRepository;
+    private TagRepository $tagRepository;
 
     public function __construct(
         ClientFactory $clientFactory,
         BuilderFactory $builderFactory,
         HistoryService $historyService,
-        HistoryRepository $historyRepository
+        HistoryRepository $historyRepository,
+        TagRepository $tagRepository
     )
     {
         $this->clientFactory = $clientFactory;
         $this->builderFactory = $builderFactory;
         $this->historyService = $historyService;
         $this->historyRepository = $historyRepository;
+        $this->tagRepository = $tagRepository;
     }
 
     /**
@@ -75,7 +79,7 @@ class SearchController extends AbstractController
         }
 
         try {
-            $renderParam['tags'] = []; // TODO include tags data
+            $renderParam['tags'] = $this->tagRepository->findBy([], ['id' => 'desc'], 50);
         } catch (\Exception $exception) {
             $renderParam['errors'][] = $exception->getMessage();
         }
