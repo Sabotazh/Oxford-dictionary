@@ -1,10 +1,10 @@
 <h3>History</h3>
 
 <ul class="list-unstyled">
-    {% if history is defined %}
-        <li><a href="#">Word 1</a></li>
-        <li><a href="#">Word 2</a></li>
-        <li><a href="#">...</a></li>
+    {% if history|length > 0 %}
+        {% for word in history %}
+            <li><a href="{{ path('search.result', {'provider': 'oxford', 'search': word.value }) }}">{{ word.value }}</a></li>
+        {% endfor %}
     {% else %}
         No history
     {% endif %}
