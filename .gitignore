@@ -12,6 +12,7 @@
 /vendor/
 ###< symfony/framework-bundle ###
 
+/_src/
 Makefile
 
 ###> symfony/webpack-encore-bundle ###

@@ -1,36 +1,63 @@
 <header>
     <nav class="navbar navbar-dark bg-dark navbar-expand-md justify-content-center">
         <div class="container">
-            <a href="{{  path('main') }}" class="navbar-brand d-flex me-auto">
+            <a href="{{ path('main') }}" class="header-brand d-flex me-auto text-white">
                 <strong>Oxford Dictionary</strong>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsingNavbar3">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="navbar-collapse collapse w-100" id="collapsingNavbar3">
-                <ul class="nav navbar-nav ms-auto w-100 justify-content-end">
+
+            <div class="d-flex align-items-center text-white">
+                <span>{% if app.user %} {{ app.user.userIdentifier }} {% endif %}</span>
+                <ul class="header-nav ms-3">
                     <li class="nav-item dropdown">
-                        <button type="button"
-                                class="btn btn-secondary dropdown-toggle"
-                                data-bs-toggle="dropdown"
-                                data-bs-display="static"
-                                aria-expanded="false"
-                        >{% if app.user %} {{ app.user.userIdentifier }} {% else %} Auth {% endif%}</button>
-                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start" aria-labelledby="navbarScrollingDropdown">
+                        <a class="nav-link py-0"
+                           data-coreui-toggle="dropdown"
+                           href="#"
+                           role="button"
+                           aria-haspopup="true"
+                           aria-expanded="false"
+                        >
+                            <div class="avatar avatar-md bg-light">
+                            <span style="font-size: 1.4em; color: Tomato;">
+                                <i class="fa-solid fa-user"></i>
+                            </span>
+                            </div>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end pt-0">
+
                             {% if app.user %}
-                                {% if app.user.isAdmin %}
-                                    <li><a class="dropdown-item" href="{{ path('dashboard') }}">Dashboard</a></li>
-                                {% else %}
-                                    <li><a class="dropdown-item" href="{{ path('profile') }}">Profile</a></li>
-                                {% endif%}
-                                <li><a class="dropdown-item" href="{{ path('favorites') }}">Favorites</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a></li>
+                                {% if app.user.isUser %}
+                                    <a class="dropdown-item" href="{{ path('profile') }}">
+                                        <i class="fa-regular fa-address-card me-2"></i>
+                                        Profile
+                                    </a>
+                                    <a class="dropdown-item" href="{{ path('favorites') }}">
+                                        <i class="fa-solid fa-heart me-2"></i>
+                                        Favorites
+                                    </a>
+                                {% elseif app.user.isAdmin %}
+                                    <a class="dropdown-item" href="{{ path('dashboard') }}">
+                                        <i class="fa-solid fa-gauge-high me-2"></i>
+                                        Dashboard
+                                    </a>
+                                {% endif %}
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ path('app_logout') }}">
+                                    <i class="fa-solid fa-right-from-bracket me-2"></i>
+                                    Logout
+                                </a>
+
                             {% else %}
-                                <li><a class="dropdown-item active" href="{{ path('app_login') }}">Sign In</a></li>
-                                <li><a class="dropdown-item" href="{{ path('app_registration') }}">Sign Up</a></li>
-                            {% endif%}
-                        </ul>
+                                <a class="dropdown-item" href="{{ path('app_login') }}">
+                                    <i class="fa-solid fa-right-to-bracket me-2"></i>
+                                    Sign In
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ path('app_registration') }}">
+                                    <i class="fa-solid fa-circle-plus me-2"></i>
+                                    Sign Up
+                                </a>
+                            {% endif %}
+                        </div>
                     </li>
                 </ul>
             </div>

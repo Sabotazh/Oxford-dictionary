@@ -27,7 +27,6 @@ class RegistrationFormType extends AbstractType
                     new Length(null, 3, 255),
                 ],
                 'attr'  => [
-                    'class'         => 'form-control-lg',
                     'placeholder'   => 'Input email',
                 ],
             ])
@@ -38,7 +37,6 @@ class RegistrationFormType extends AbstractType
                     new Length(null, 3, 255),
                 ],
                 'attr'  => [
-                    'class'         => 'form-control-lg',
                     'placeholder'   => 'Input Your name',
                 ],
             ])
@@ -50,14 +48,12 @@ class RegistrationFormType extends AbstractType
                         new Length(null, 8, 255),
                     ],
                     'attr'  => [
-                        'class'         => 'form-control-lg',
                         'placeholder'   => 'Input password',
                     ],
                 ],
                 'second_options'    => [
                     'label' => 'Confirm Password',
                     'attr'  => [
-                        'class'         => 'form-control-lg',
                         'placeholder'   => 'Confirm password',
                     ],
                 ],
@@ -65,7 +61,7 @@ class RegistrationFormType extends AbstractType
             ->add('submit', SubmitType::class, [
                 'label' => 'Register',
                 'attr'  => [
-                    'class' => 'btn-outline-light btn-lg px-5',
+                    'class' => 'btn-block btn-success',
                 ],
             ]);;
     }
