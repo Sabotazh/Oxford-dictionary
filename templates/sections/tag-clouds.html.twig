@@ -5,7 +5,7 @@
         {% if tags|length > 0 %}
             {% for tag in tags %}
 
-                <div id="tags"  style="font-size: 50%">
+                <div id="tags" class="d-inline" style="font-size: 50%">
                     <small>
                         {% include 'elements/tag.html.twig' with {'title': tag.title|lower, 'id': tag.id, 'size': random(200,700)/100} %}
                     </small>

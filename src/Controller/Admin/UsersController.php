@@ -2,22 +2,33 @@
 
 namespace App\Controller\Admin;
 
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Entity\User;
+
+use App\Repository\UserRepository;
 
 class UsersController extends AbstractController
 {
+    private UserRepository $userRepository;
+
+    /**
+     * @var FavoriteRepository
+     */
+    public function __construct(
+        UserRepository $userRepository
+    )
+    {
+       $this->userRepository = $userRepository;
+    }
+
     /**
      * @return Response
      */
     #[Route('/admin/users', methods: ['GET'], name: 'users')]
-    public function users(ManagerRegistry $doctrine): Response
+    public function users(): Response
     {
-        $repository = $doctrine->getRepository(User::class);
-        $users = $repository->findAll();
+        $users = $this->userRepository->findAll();
 
         return $this->render('pages/admin/users.html.twig', [
             'users' => $users
