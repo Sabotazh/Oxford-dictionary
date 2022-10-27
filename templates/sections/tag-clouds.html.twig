@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row justify-content-center">
     <div class="col-6 align-self-center mt-5">
         <h3>Tag Clouds</h3>
 
@@ -7,7 +7,7 @@
 
                 <div id="tags" class="d-inline" style="font-size: 50%">
                     <small>
-                        {% include 'elements/tag.html.twig' with {'title': tag.title|lower, 'id': tag.id, 'size': random(200,700)/100} %}
+                        {% include 'elements/tag.html.twig' with {'title': tag.word|lower, 'id': tag.id, 'size': random(200,700)/100} %}
                     </small>
                 </div>
 

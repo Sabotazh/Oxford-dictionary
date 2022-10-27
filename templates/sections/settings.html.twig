@@ -1,0 +1,12 @@
+{{ form_start(form) }}
+	<div class="mb-1">
+        {{ form_row(form.name, {'value' : 'Default title'}) }}
+	</div>
+	<div class="mb-1">
+		{{ form_row(form.email) }}
+	</div>
+	<div class="mb-1">
+		{{ form_row(form.password) }}
+	</div>
+	{{ form_row(form.submit) }}
+{{ form_end(form) }}

@@ -2,36 +2,37 @@
 
 namespace App\Entity;
 
-use App\Repository\HistoryRepository;
+use App\Repository\SearchRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: HistoryRepository::class)]
-class History
+#[ORM\Entity(repositoryClass: SearchRepository::class)]
+#[ORM\Table(name: '`searches`')]
+class Search
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(length: 255, unique: true)]
-    private ?string $value = null;
+    private string $word;
 
     #[ORM\Column]
-    private ?int $count = 1;
+    private int $count = 1;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getValue(): ?string
+    public function getWord(): ?string
     {
-        return $this->value;
+        return $this->word;
     }
 
-    public function setValue(string $value): self
+    public function setWord(string $word): self
     {
-        $this->value = $value;
+        $this->word = $word;
 
         return $this;
     }

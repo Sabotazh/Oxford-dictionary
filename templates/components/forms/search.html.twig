@@ -8,7 +8,7 @@
             {{ form_row(form.submit) }}
         </div>
         <div class="col-sm-1">
-            {% if app.request.get('_route') == 'search.result' and app.user %}
+            {% if app.request.get('_route') == 'dictionary_search_result' and app.user %}
                 <button
                     type="submit"
                     class="btn btn-primary"

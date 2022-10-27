@@ -2,26 +2,29 @@
 
 namespace App\Controller\User;
 
+use App\Entity\Favorite;
+use App\Exception\FavoriteException;
+use App\Repository\FavoriteRepository;
+use App\Repository\SearchRepository;
+use App\Service\FavoriteService;
+use Doctrine\Persistence\ManagerRegistry;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
-use Doctrine\Persistence\ManagerRegistry;
-
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-
-use App\Entity\Favorite;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-
-use App\Repository\FavoriteRepository;
 
 class FavoritesController extends AbstractController
 {
-    private $security;
     private const LINK = '/dictionary/oxford/entries?search=';
-    protected $fileName = 'favorites.xlsx';
+
+    protected string $fileName = 'favorites.xlsx';
+
+    private Security $security;
     private FavoriteRepository $favoriteRepository;
 
     /**
@@ -39,7 +42,7 @@ class FavoritesController extends AbstractController
     /**
      * @return Response
      */
-    #[Route('/user/favorites', methods: 'GET', name: 'favorites')]
+    #[Route('/user/favorites', methods: 'GET', name: 'user_favorites')]
     public function favorites(): Response
     {
         $user = $this->security->getUser();
@@ -50,36 +53,63 @@ class FavoritesController extends AbstractController
     }
 
     /**
+     * @param ManagerRegistry $doctrine
      * @param Request $request
-     * @return Response
+     * @param SearchRepository $searcheRepository
+     * @param FavoriteService $service
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    #[Route('/user/favorite/add', methods: 'POST', name: 'add.favorite')]
-    public function addFavorite(ManagerRegistry $doctrine, Request $request): Response
+    #[Route('/user/favorite/add', methods: 'POST', name: 'user_favorite_add')]
+    public function addFavorite(
+        ManagerRegistry  $doctrine,
+        Request          $request,
+        SearchRepository $searcheRepository,
+        FavoriteService  $service
+    ): JsonResponse
     {
+        $word = $request->request->get('favorite');
         $user = $this->security->getUser();
+        $history = $searcheRepository->findOneBy(['word' => $word]);
 
-        $data = $request->request->get('favorite');
-
-        $favorite = $this->favoriteRepository->findOneBy(['word_id' => $data]);
-
-        if(!$favorite) {
-            $favorite = new Favorite();
-            $favorite->setCount(1);
-            $favorite->setCreatedAt();
-        } else {
-            $currentCount = $favorite->getCount();
-            $favorite->setCount(++$currentCount);
-            $favorite->setUpdatedAt();
+        // check if this word is in the favorites, if so, throw an exception
+        try {
+            $service->isExists($user->getId(), $history->getId());
+        } catch (FavoriteException $exception) {
+            return new JsonResponse([
+                'status' => 'failed',
+                'code' => Response::HTTP_BAD_REQUEST,
+                'exception' => $exception,
+                'message' => $exception->getMessage(),
+            ], Response::HTTP_BAD_REQUEST);
         }
 
-        $entityManager = $doctrine->getManager();
+        // add word to favorites table
+        try {
+            $entityManager = $doctrine->getManager();
 
-        $favorite->setWordId($data);
-        $favorite->setUserId($user->getId());
-        $entityManager->persist($favorite);
-        $entityManager->flush();
+            $favorite = new Favorite();
+            $favorite->setUserId($user->getId())
+                ->setWordId($history->getId())
+                ->setCreatedAt()
+                ->setUpdatedAt();
 
-        return new Response('The word was saved');
+            $entityManager->persist($favorite);
+            $entityManager->flush();
+        } catch (\Exception $exception) {
+            return new JsonResponse([
+                'status' => 'error',
+                'code' => Response::HTTP_BAD_REQUEST,
+                'exception' => $exception,
+                'message' => 'Some error has occurred with save favorite.',
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        // return success result
+        return new JsonResponse([
+            'status'    => 'success',
+            'code'      => Response::HTTP_OK,
+            'message'   => 'New word added to your favorites.',
+        ], Response::HTTP_OK);
     }
 
     /**
