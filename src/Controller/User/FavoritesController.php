@@ -82,6 +82,20 @@ class FavoritesController extends AbstractController
         return new Response('The word was saved');
     }
 
+    /**
+     * @param int $id
+     * @return Response
+     */
+    #[Route('/user/favorite/delete/{id}', methods: 'DELETE', name: 'delete.favorite')]
+    public function deleteFavorite(int $id, ManagerRegistry $doctrine): Response
+    {
+        $favorite = $this->favoriteRepository->find($id);
+        $this->favoriteRepository->remove($favorite);
+        $entityManager = $doctrine->getManager();
+        $entityManager->flush();
+        return new Response('The word was deleted');
+    }
+
     #[Route('/user/favorites/export', methods: 'GET', name: 'export.favorites')]
     public function exportFavorites()
     {
