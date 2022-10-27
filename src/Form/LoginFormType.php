@@ -24,7 +24,6 @@ class LoginFormType extends AbstractType
                     new Email(),
                 ],
                 'attr'  => [
-                    'class'         => 'form-control-lg',
                     'placeholder'   => 'Input email',
                 ],
             ])
@@ -35,14 +34,13 @@ class LoginFormType extends AbstractType
                     new Length(null, 8, 255),
                 ],
                 'attr'  => [
-                    'class'         => 'form-control-lg',
                     'placeholder'   => 'Input password',
                 ],
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Login',
                 'attr'  => [
-                    'class' => 'btn-outline-light btn-lg px-5',
+                    'class' => 'btn-primary px-4',
                 ],
             ]);
     }

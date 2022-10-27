@@ -4,6 +4,8 @@ window.$ = require('jquery');
 window.bootstrap = require('bootstrap');
 window.fortawesome = require('@fortawesome/fontawesome-free/js/all.js');
 
+const coreui = require('@coreui/coreui')
+
 $( document ).ready(function() {
     require('./scripts/favorites.js');
 });
