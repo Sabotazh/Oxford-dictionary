@@ -1,5 +1,14 @@
 @import '~@fortawesome/fontawesome-free/scss/regular';
 @import '~@fortawesome/fontawesome-free/scss/solid';
 @import '~@fortawesome/fontawesome-free/scss/brands';
+
+@import "simplebar/simplebar.css";
+
+.simplebar-content {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
 //@import "~bootstrap/scss/bootstrap";
-@import "~@coreui/coreui/scss/coreui";
+@import "coreui/style.css";

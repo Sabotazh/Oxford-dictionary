@@ -1,0 +1,48 @@
+{% if pages > 1 %}
+    <ul class="pagination pagination-sm justify-content-center">
+        {% if pages > 2 %}
+            <li class="page-item start {% if page == 1 %} disabled {% endif %}">
+                <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({(get): 1}))) }}"
+                   class="page-link"
+                >
+                    <i class="fa-solid fa-angles-left"></i>
+                </a>
+            </li>
+        {% endif %}
+
+        <li class="page-item prev {% if page == 1 %}disabled{% endif %}">
+            <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({(get): page - 1}))) }}" class="page-link" {% if page > 1 %}rel="prev"{% endif %}>
+                <i class="fa-solid fa-angle-left"></i>
+            </a>
+        </li>
+
+        {% for p in range(max(page - 4, 1), min(page + 4, pages)) %}
+            <li class="page-item {% if p == page %} active {% else %} hidden-xs {% endif %}">
+                <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({(get): p}))) }}"
+                   class="page-link"
+                >
+                    {{ p }}
+                </a>
+            </li>
+        {% endfor %}
+
+        <li class="page-item next {% if page == pages %} disabled {% endif %}">
+            <a href="{{ page < pages ? path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({(get): page +1 }))) : '#' }}"
+               class="page-link"
+               {% if page < pages %} rel="next" {% endif %}
+            >
+                <i class="fa-solid fa-angle-right"></i>
+            </a>
+        </li>
+
+        {% if pages > 2 %}
+            <li class="page-item end {% if page == pages %} disabled {% endif %}">
+                <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({(get): pages}))) }}"
+                   class="page-link"
+                >
+                    <i class="fa-solid fa-angles-right"></i>
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+{% endif %}

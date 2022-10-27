@@ -9,7 +9,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\Table(name: '`user`')]
+#[ORM\Table(name: '`users`')]
 #[UniqueEntity(fields: 'email', message: 'This email is already used.')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -35,6 +35,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column(type: 'string')]
     private string $password;
+
+    #[ORM\Column(name: 'is_banned', type: 'boolean')]
+    private bool $isBanned = false;
 
     /**
      * @var datetime $createdAt
@@ -99,8 +102,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = self::ROLE_USER;
+//        // guarantee every user at least has ROLE_USER
+//        $roles[] = self::ROLE_USER;
 
         return array_unique($roles);
     }
@@ -133,6 +136,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isBanned(): bool
+    {
+        return $this->isBanned;
+    }
+
+    /**
+     * @param bool $isBanned
+     * @return $this
+     */
+    public function setIsBanned(bool $isBanned): self
+    {
+        $this->isBanned = $isBanned;
 
         return $this;
     }

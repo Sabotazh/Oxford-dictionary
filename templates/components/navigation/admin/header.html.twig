@@ -1,0 +1,15 @@
+<header class="header header-sticky mb-4">
+    <div class="container-fluid">
+        <ul class="header-nav ms-auto">
+
+        </ul>
+
+        <div class="d-flex align-items-center text-dark">
+            <span>{% if app.user %} {{ app.user.userIdentifier }} {% endif %}</span>
+
+            {% include 'elements/menus/user-menu.html.twig' %}
+
+        </div>
+
+    </div>
+</header>

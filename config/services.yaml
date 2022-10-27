@@ -32,3 +32,10 @@ services:
             $baseUrl: 'https://od-api.oxforddictionaries.com/api/v2'
             $appId: '%env(OXFORD_API_ID)%'
             $appKey: '%env(OXFORD_API_KEY)%'
+
+    App\Twig\Extension\TablePaginationExtension:
+        arguments:
+            $template: "@Twig_Environment"
+            $requestStack: "@request_stack"
+        tags:
+            - { name: twig.extension }
