@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\FavoritesRepository;
+use App\Repository\FavoriteRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: FavoritesRepository::class)]
+#[ORM\Entity(repositoryClass: FavoriteRepository::class)]
 #[ORM\Table(name: '`favorites`')]
-class Favorites
+class Favorite
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

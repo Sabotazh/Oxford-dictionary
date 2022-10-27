@@ -2,10 +2,10 @@
 
 namespace App\Fixture;
 
-use App\Entity\Favorites;
+use App\Entity\Favorite;
 use App\Entity\User;
 use App\Entity\Word;
-use App\Repository\FavoritesRepository;
+use App\Repository\FavoriteRepository;
 use App\Repository\UserRepository;
 use App\Repository\WordRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -13,22 +13,22 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory as Faker;
 
-class FavoritesFixtures extends Fixture implements DependentFixtureInterface
+class FavoriteFixtures extends Fixture implements DependentFixtureInterface
 {
 
-    private FavoritesRepository $favoritesRepository;
+    private FavoriteRepository $favoriteRepository;
     private UserRepository $userRepository;
     private WordRepository $wordRepository;
     private Faker $faker;
 
     public function __construct(
-        FavoritesRepository $favoritesRepository,
+        FavoriteRepository $favoriteRepository,
         UserRepository $userRepository,
         WordRepository $wordRepository,
         Faker $faker
     )
     {
-        $this->favoritesRepository = $favoritesRepository;
+        $this->favoriteRepository = $favoriteRepository;
         $this->userRepository = $userRepository;
         $this->wordRepository = $wordRepository;
         $this->faker = $faker;
@@ -55,14 +55,14 @@ class FavoritesFixtures extends Fixture implements DependentFixtureInterface
             $wordId = $wordsIds[$wordArrRandomIndex];
             array_splice($wordsIds, $wordArrRandomIndex, 1);
 
-            $favorite = new Favorites();
+            $favorite = new Favorite();
             $favorite->setUserId($userId)
                 ->setWordId($wordId)
                 ->setCount(0)
                 ->setCreatedAt()
                 ->setUpdatedAt();
 
-            $this->favoritesRepository->save($favorite, true);
+            $this->favoriteRepository->save($favorite, true);
         }
     }
 

@@ -10,3 +10,15 @@ $('#save-to-favorite').on('click', function(e) {
         // 
     })
 })
+
+$('.remove-favorite').on('click', function(e) {
+    e.preventDefault();
+    let id = $(this).data('id');
+    $('table#favorites tr#row-'+id).remove();
+    $.ajax({
+        url: '/user/favorite/delete/'+id,
+        method: 'DELETE'
+    }).then(() => {
+        $('table#favorites tr#row-'+id).remove();
+    })
+})

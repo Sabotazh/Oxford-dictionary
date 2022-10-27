@@ -12,21 +12,29 @@ use Doctrine\Persistence\ManagerRegistry;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-use App\Entity\Favorites;
+use App\Entity\Favorite;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+
+use App\Repository\FavoriteRepository;
 
 class FavoritesController extends AbstractController
 {
+    private $security;
     private const LINK = '/dictionary/oxford/entries?search=';
     protected $fileName = 'favorites.xlsx';
+    private FavoriteRepository $favoriteRepository;
+
     /**
      * @var Security
+     * @var FavoriteRepository
      */
-    private $security;
-
-    public function __construct(Security $security)
+    public function __construct(
+        Security $security,
+        FavoriteRepository $favoriteRepository
+    )
     {
        $this->security = $security;
+       $this->favoriteRepository = $favoriteRepository;
     }
     /**
      * @return Response
@@ -34,7 +42,11 @@ class FavoritesController extends AbstractController
     #[Route('/user/favorites', methods: 'GET', name: 'favorites')]
     public function favorites(): Response
     {
-        return $this->render('pages/user/favorites.html.twig');
+        $user = $this->security->getUser();
+        $favorites = $this->favoriteRepository->findBy(['user_id' => $user->getId()]);
+        return $this->render('pages/user/favorites.html.twig', [
+            'favorites' => $favorites
+        ]);
     }
 
     /**
@@ -48,31 +60,44 @@ class FavoritesController extends AbstractController
 
         $data = $request->request->get('favorite');
 
-        $repository = $doctrine->getRepository(Favorites::class);
-        $favorites = $repository->findOneBy(['word_id' => $data]);
+        $favorite = $this->favoriteRepository->findOneBy(['word_id' => $data]);
 
-        if(!$favorites) {
-            $favorites = new Favorites();
-            $favorites->setCount(1);
-            $favorites->setCreatedAt();
+        if(!$favorite) {
+            $favorite = new Favorite();
+            $favorite->setCount(1);
+            $favorite->setCreatedAt();
         } else {
-            $currentCount = $favorites->getCount();
-            $favorites->setCount(++$currentCount);
-            $favorites->setUpdatedAt();
+            $currentCount = $favorite->getCount();
+            $favorite->setCount(++$currentCount);
+            $favorite->setUpdatedAt();
         }
 
         $entityManager = $doctrine->getManager();
 
-        $favorites->setWordId($data);
-        $favorites->setUserId($user->getId());
-        $entityManager->persist($favorites);
+        $favorite->setWordId($data);
+        $favorite->setUserId($user->getId());
+        $entityManager->persist($favorite);
         $entityManager->flush();
 
         return new Response('The word was saved');
     }
 
+    /**
+     * @param int $id
+     * @return Response
+     */
+    #[Route('/user/favorite/delete/{id}', methods: 'DELETE', name: 'delete.favorite')]
+    public function deleteFavorite(int $id, ManagerRegistry $doctrine): Response
+    {
+        $favorite = $this->favoriteRepository->find($id);
+        $this->favoriteRepository->remove($favorite);
+        $entityManager = $doctrine->getManager();
+        $entityManager->flush();
+        return new Response('The word was deleted');
+    }
+
     #[Route('/user/favorites/export', methods: 'GET', name: 'export.favorites')]
-    public function exportFavorites(ManagerRegistry $doctrine)
+    public function exportFavorites()
     {
         $spreadsheet = new Spreadsheet();
         
@@ -83,8 +108,7 @@ class FavoritesController extends AbstractController
 
         $user = $this->security->getUser();
 
-        $repository = $doctrine->getRepository(Favorites::class);
-        $favorites = $repository->findBy(['user_id' => $user->getId()]);
+        $favorites = $this->favoriteRepository->findBy(['user_id' => $user->getId()]);
 
         $sheet->setTitle("My favorites words");
 

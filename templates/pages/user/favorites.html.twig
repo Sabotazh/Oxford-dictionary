@@ -1,7 +1,6 @@
 {% extends 'layout/base.html.twig' %}
 
 {% block body %}
-    Favorites
     <a
         href="{{ path('export.favorites') }}"
         class="btn btn-success"
@@ -10,4 +9,32 @@
         title="Export your favourites to Excel"
         id="export-favorite-to-excel"
     ><i class="fa-solid fa-file-excel"></i></a>
+
+	<table class="table" id="favorites">
+		<thead>
+			<tr>
+				<th scope="col">#</th>
+				<th scope="col">Word</th>
+                <th scope="col"></th>
+			</tr>
+		</thead>
+		<tbody>
+            {% if favorites|length > 0 %}
+                {% for favorite in favorites %}
+                    <tr id="row-{{ favorite.id }}">
+                        <th scope="row">{{ favorite.id }}</th>
+                        <td>{{ favorite.wordId }}</td>
+                        <td class="text-end">
+                            <button
+                                data-id="{{ favorite.id }}"
+                                class="btn btn-danger remove-favorite"
+                            ><i class="fa-solid fa-trash"></i></button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <div>No words have been searched yet.</div>
+            {% endif %}
+		</tbody>
+	</table>
 {% endblock %}
