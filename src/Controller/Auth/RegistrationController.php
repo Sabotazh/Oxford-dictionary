@@ -72,6 +72,10 @@ class RegistrationController extends AbstractController
         $errors = FormErrors::getErrors($form);
 
         $this->addFlash('errors', $errors);
+        $this->addFlash('old', [
+            'name'  => $request->request->get('name'),
+            'email' => $request->request->get('email'),
+        ]);
 
         return $this->redirectToRoute('app_registration');
     }

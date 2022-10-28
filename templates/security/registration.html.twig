@@ -3,6 +3,11 @@
 {% block title %}Sign Up{% endblock %}
 
 {% block body %}
+
+    {% if app.session.flashbag.has('old') %}
+        {% set user = app.session.flashbag.get('old')[0] %}
+    {% endif %}
+
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card mb-4 mx-4">
@@ -21,14 +26,14 @@
                         <span class="input-group-text">
                             <i class="fa-solid fa-user"></i>
                         </span>
-                        {{ form_widget(form.name) }}
+                        {{ form_widget(form.name, { 'attr': { 'value': user.name ?? '' } }) }}
                     </div>
 
                     <div class="input-group mb-3">
                         <span class="input-group-text">
                             <i class="fa-solid fa-envelope"></i>
                         </span>
-                        {{ form_widget(form.email) }}
+                        {{ form_widget(form.email, { 'attr': { 'value': user.email ?? '' } }) }}
                     </div>
 
                     <div class="input-group mb-3">
