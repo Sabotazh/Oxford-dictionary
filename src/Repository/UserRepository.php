@@ -58,7 +58,31 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->save($user, true);
     }
 
-    public function pagination(int $page = 1, int $max = 10)
+    /**
+     * @return array
+     * @throws \Doctrine\DBAL\Exception
+     */
+    public function countRegisteredUsersByMonth(): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = "
+            SELECT MONTH(users.created_at) as 'month', COUNT(users.id) as 'total' 
+            FROM users 
+            GROUP BY MONTH(users.created_at)
+            ";
+        $stmt = $conn->prepare($sql);
+        $resultSet = $stmt->executeQuery();
+
+        return $resultSet->fetchAllKeyValue();
+    }
+
+    /**
+     * @param int $page
+     * @param int $max
+     * @return \Doctrine\ORM\Tools\Pagination\Paginator
+     */
+    public function pagination(int $page = 1, int $max = 10): Paginator
     {
         $dql = $this->createQueryBuilder('user');
         $dql->orderBy('user.name');
@@ -71,7 +95,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
         $paginator = new Paginator($query);
 
-        if(($paginator->count() <=  $firstResult) && $page != 1) {
+        if (($paginator->count() <=  $firstResult) && $page !== 1) {
             throw new NotFoundHttpException('Page not found');
         }
 

@@ -6,7 +6,9 @@
 /.env.test
 /.idea/
 /.phpunit.result.cache
+/coverage.xml
 /config/secrets/prod/prod.decrypt.private.php
+/coverage/
 /public/bundles/
 /var/
 /vendor/
