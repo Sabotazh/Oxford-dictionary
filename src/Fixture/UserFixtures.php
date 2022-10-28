@@ -40,7 +40,7 @@ class UserFixtures extends Fixture
                     '$2y$13$pruD8xbAtwwZf6FHHW.I6eAxp01TSZxUGE4hiAYzbaj7NgI088RWW'
                 )
                 ->setIsBanned($this->faker->boolean())
-                ->setCreatedAt()
+                ->setCreatedAt($this->faker->dateTimeThisYear())
                 ->setUpdatedAt();
 
             $this->repository->save($user, true);

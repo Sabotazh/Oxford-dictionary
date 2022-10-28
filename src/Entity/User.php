@@ -167,9 +167,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->createdAt;
     }
 
-    public function setCreatedAt(): self
+    public function setCreatedAt(\DateTime $time = null): self
     {
-        $this->createdAt = new \DateTime('now');
+        $this->createdAt = $time ?? new \DateTime('now');
 
         return $this;
     }
