@@ -10,8 +10,8 @@
 				<img src="/img/no-image.png" class="rounded float-start">
 				<div class="card-body">
 					<ul class="list-group list-group-flush">
-						<li class="list-group-item">{{ user.name }}</li>
-						<li class="list-group-item">{{ user.email }}</li>
+						<li class="list-group-item"><strong>Name: </strong>{{ user.name }}</li>
+						<li class="list-group-item"><strong>Email: </strong>{{ user.email }}</li>
 					</ul>
 				</div>
 			</div>
@@ -33,7 +33,7 @@
                         {% include 'sections/favorites.html.twig' %}
                     </div>
                     <div class="tab-pane" id="settings">
-                        {% include 'sections/settings.html.twig' %}
+                        {% include 'sections/user/settings.html.twig' %}
                     </div>
 				</div>
 			</div>

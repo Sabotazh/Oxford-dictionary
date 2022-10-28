@@ -14,7 +14,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class ProfileController extends AbstractController
 {
-    private $security;
+    private Security $security;
     private FavoriteRepository $favoriteRepository;
     private UserRepository $userRepository;
     /**
@@ -32,9 +32,9 @@ class ProfileController extends AbstractController
         $this->userRepository = $userRepository;
     }
     /**
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    #[Route('user/profile', methods: 'GET', name: 'profile')]
+    #[Route('user/profile', methods: 'GET', name: 'user_profile')]
     public function profile(): Response
     {
         $user = $this->security->getUser();
@@ -49,7 +49,12 @@ class ProfileController extends AbstractController
         ]);
     }
 
-    #[Route('user/profile', methods: 'POST', name: 'update.profile')]
+    /**
+     * @param Request $request
+     * @param UserPasswordHasherInterface $hasher
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    #[Route('user/profile', methods: 'POST', name: 'user_profile_update')]
     public function updateProfile(
         Request $request, 
         UserPasswordHasherInterface $hasher
@@ -66,8 +71,10 @@ class ProfileController extends AbstractController
                 $user->setPassword($hasher->hashPassword($user, $data['password']));
             }
             $this->userRepository->save($user, true);
+
+            $this->addFlash('alert_success', 'Your profile data has been successfully saved.');
         } catch (\Exception $exception) {
-            dd($exception);
+            $this->addFlash('alert_error', 'Error saving new profile data.');
         }
 
         return $this->redirectToRoute('profile');

@@ -20,7 +20,9 @@
 
         <div id="liveAlertPlaceholder"></div>
 
+
         <main class="flex-shrink-0">
+            {% include 'components/flash/alert-flash.html.twig' %}
             <div class="container mt-5 mb-5">
                 {% block body %}{% endblock %}
             </div>
