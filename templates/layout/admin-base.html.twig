@@ -23,6 +23,7 @@
 <div class="wrapper d-flex flex-column min-vh-100 bg-light">
     {% include 'components/navigation/admin/header.html.twig' %}
     <div class="body flex-grow-1 px-3">
+        {% include 'components/flash/alert-flash.html.twig' %}
         <div class="container-lg">
             {% block body %}{% endblock %}
         </div>

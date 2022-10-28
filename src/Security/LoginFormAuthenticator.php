@@ -51,7 +51,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         $user = $this->security->getUser();
 
         if ($user->isAdmin()){
-            return new RedirectResponse($this->urlGenerator->generate('dashboard'));
+            return new RedirectResponse($this->urlGenerator->generate('admin_dashboard'));
         }
 
         return new RedirectResponse($this->urlGenerator->generate('profile'));

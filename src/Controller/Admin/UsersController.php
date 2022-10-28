@@ -13,17 +13,14 @@ class UsersController extends AbstractController
 {
     private UserRepository $userRepository;
 
-    /**
-     * @var FavoriteRepository
-     */
-    public function __construct(
-        UserRepository $userRepository
-    )
+    public function __construct(UserRepository $userRepository)
     {
        $this->userRepository = $userRepository;
     }
 
     /**
+     * @param Request $request
+     * @param UserRepository $repository
      * @return Response
      */
     #[Route('/admin/users', methods: ['GET'], name: 'admin_users')]
@@ -38,7 +35,6 @@ class UsersController extends AbstractController
 
     /**
      * @param int $id
-     * @param Request $request
      * @param UserRepository $repository
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -49,13 +45,20 @@ class UsersController extends AbstractController
             $user = $repository->find($id);
             $user->setIsBanned(true);
             $repository->save($user, true);
+
+            $this->addFlash('alert_success', 'User has been banned.');
         } catch (\Exception $exception) {
-            dd($exception);
+            $this->addFlash('alert_error', 'Error banning user.');
         }
 
         return $this->redirectToRoute('admin_users');
     }
 
+    /**
+     * @param int $id
+     * @param UserRepository $repository
+     * @return RedirectResponse
+     */
     #[Route('/admin/users/user/{id}/unbann', name: 'admin_users_user_unbann')]
     public function unbannUser(int $id, UserRepository $repository): RedirectResponse
     {
@@ -63,8 +66,10 @@ class UsersController extends AbstractController
             $user = $repository->find($id);
             $user->setIsBanned(false);
             $repository->save($user, true);
+
+            $this->addFlash('alert_success', 'User has been unbanned.');
         } catch (\Exception $exception) {
-            dd($exception);
+            $this->addFlash('alert_error', 'Error unbanning user.');
         }
 
         return $this->redirectToRoute('admin_users');

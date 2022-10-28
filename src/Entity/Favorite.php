@@ -6,7 +6,7 @@ use App\Repository\FavoriteRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FavoriteRepository::class)]
-#[ORM\Table(name: '`favorites`')]
+#[ORM\Table(name: '`user_favorites`')]
 class Favorite
 {
     #[ORM\Id]
@@ -19,9 +19,6 @@ class Favorite
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     private ?string $word_id = null;
-
-    #[ORM\Column(type: 'integer')]
-    private ?int $count = null;
 
     /**
      * @var datetime $createdAt
@@ -66,18 +63,6 @@ class Favorite
     public function setWordId(string $word_id): self
     {
         $this->word_id = $word_id;
-
-        return $this;
-    }
-
-    public function getCount(): ?int
-    {
-        return $this->count;
-    }
-
-    public function setCount(int $count): self
-    {
-        $this->count = $count;
 
         return $this;
     }
