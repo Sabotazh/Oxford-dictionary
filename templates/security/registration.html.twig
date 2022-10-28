@@ -3,6 +3,11 @@
 {% block title %}Sign Up{% endblock %}
 
 {% block body %}
+
+    {% if app.session.flashbag.has('old') %}
+        {% set user = app.session.flashbag.get('old')[0] %}
+    {% endif %}
+
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card mb-4 mx-4">
@@ -21,14 +26,14 @@
                         <span class="input-group-text">
                             <i class="fa-solid fa-user"></i>
                         </span>
-                        {{ form_widget(form.name) }}
+                        {{ form_widget(form.name, { 'attr': { 'value': user.name ?? '' } }) }}
                     </div>
 
                     <div class="input-group mb-3">
                         <span class="input-group-text">
                             <i class="fa-solid fa-envelope"></i>
                         </span>
-                        {{ form_widget(form.email) }}
+                        {{ form_widget(form.email, { 'attr': { 'value': user.email ?? '' } }) }}
                     </div>
 
                     <div class="input-group mb-3">
@@ -45,7 +50,6 @@
                         {{ form_widget(form.password.second) }}
                     </div>
 
-{#                    <button class="btn btn-block btn-success" type="button">Create Account</button>#}
                     {{ form_label(form.submit) }}
 
                     {{ form_end(form) }}
@@ -54,50 +58,4 @@
             </div>
         </div>
     </div>
-{#    <div class="row">#}
-{#        <section class="vh-100 gradient-custom">#}
-{#            <div class="container py-5 h-100">#}
-{#                <div class="row d-flex justify-content-center align-items-center h-100">#}
-{#                    <div class="col-12 col-md-8 col-lg-6 col-xl-5">#}
-{#                        <div class="card bg-dark text-white" style="border-radius: 1rem;">#}
-{#                            <div class="card-body p-5 text-center">#}
-
-{#                                {{ form_start(form, { 'attr': {'class': 'mt-md-4 pb-5'} }) }}#}
-
-{#                                <h2 class="fw-bold mb-2 text-uppercase">Sign Up</h2>#}
-
-{#                                {% if error is defined %}#}
-{#                                    {{ dump(error) }}#}
-{#                                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>#}
-{#                                {% endif %}#}
-
-{#                                <div class="form-outline form-white mb-4">#}
-{#                                    {{ form_widget(form.email) }}#}
-{#                                    {{ form_label(form.email) }}#}
-{#                                </div>#}
-
-{#                                <div class="form-outline form-white mb-4">#}
-{#                                    {{ form_widget(form.name) }}#}
-{#                                    {{ form_label(form.name) }}#}
-{#                                </div>#}
-
-{#                                <div class="form-outline form-white mb-4">#}
-{#                                    {{ form_widget(form.password.first) }}#}
-{#                                    {{ form_label(form.password.first) }}#}
-{#                                </div>#}
-
-{#                                <div class="form-outline form-white mb-4">#}
-{#                                    {{ form_widget(form.password.second) }}#}
-{#                                    {{ form_label(form.password.second) }}#}
-{#                                </div>#}
-
-{#                                {{ form_end(form) }}#}
-
-{#                            </div>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#        </section>#}
-{#    </div>#}
 {% endblock %}

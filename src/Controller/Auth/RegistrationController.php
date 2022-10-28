@@ -17,6 +17,9 @@ use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 
 class RegistrationController extends AbstractController
 {
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     #[Route(path: '/registration', name: 'app_registration')]
     public function __invoke(): Response
     {
@@ -69,6 +72,10 @@ class RegistrationController extends AbstractController
         $errors = FormErrors::getErrors($form);
 
         $this->addFlash('errors', $errors);
+        $this->addFlash('old', [
+            'name'  => $request->request->get('name'),
+            'email' => $request->request->get('email'),
+        ]);
 
         return $this->redirectToRoute('app_registration');
     }
