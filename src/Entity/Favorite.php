@@ -17,8 +17,8 @@ class Favorite
     #[ORM\Column(type: 'integer')]
     private ?int $user_id = null;
 
-    #[ORM\Column(type: 'string', length: 255, unique: true)]
-    private ?string $word_id = null;
+    #[ORM\Column(type: 'integer', length: 255, unique: true)]
+    private ?int $word_id = null;
 
     /**
      * @var datetime $createdAt
@@ -41,6 +41,13 @@ class Favorite
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(int $id):self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getUserId(): ?int

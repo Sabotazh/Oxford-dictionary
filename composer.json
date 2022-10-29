@@ -13,6 +13,7 @@
         "doctrine/orm": "^2.13",
         "guzzlehttp/guzzle": "^7.5",
         "phpoffice/phpspreadsheet": "^1.25",
+        "scienta/doctrine-json-functions": "^5.2",
         "symfony/asset": "6.1.*",
         "symfony/console": "6.1.*",
         "symfony/dotenv": "6.1.*",
