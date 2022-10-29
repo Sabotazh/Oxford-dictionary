@@ -1,4 +1,5 @@
 {{ form_start(form) }}
+	{% include 'components/flash/auth-flash.html.twig' %}
 	<div class="mb-1">
         {{ form_row(form.name, {'value' : 'Default title'}) }}
 	</div>

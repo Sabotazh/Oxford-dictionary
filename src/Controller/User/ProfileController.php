@@ -11,6 +11,7 @@ use App\Form\SettingFormType;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\UserRepository;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use App\Service\FormErrors;
 
 class ProfileController extends AbstractController
 {
@@ -65,18 +66,25 @@ class ProfileController extends AbstractController
 
         try {
             $user = $this->userRepository->find($user->getId());
-            $user->setName($data['name']);
-            $user->setEmail($data['email']);
-            if($data['password']) {
-                $user->setPassword($hasher->hashPassword($user, $data['password']));
+            $form = $this->createForm(SettingFormType::class);
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $user->setName($data['name']);
+                $user->setEmail($data['email']);
+                if($data['password']) {
+                    $user->setPassword($hasher->hashPassword($user, $data['password']));
+                }
+                $this->userRepository->save($user, true);
+                $this->addFlash('alert_success', 'Your profile data has been successfully saved.');
+            } else {
+                $errors = FormErrors::getErrors($form);
+                $this->addFlash('errors', $errors);
+                $this->addFlash('alert_error', 'Error saving new profile data.');
             }
-            $this->userRepository->save($user, true);
-
-            $this->addFlash('alert_success', 'Your profile data has been successfully saved.');
         } catch (\Exception $exception) {
             $this->addFlash('alert_error', 'Error saving new profile data.');
         }
 
-        return $this->redirectToRoute('profile');
+        return $this->redirectToRoute('user_profile');
     }
 }
