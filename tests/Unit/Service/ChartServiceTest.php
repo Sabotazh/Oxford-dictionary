@@ -10,6 +10,7 @@ use Symfony\UX\Chartjs\Model\Chart;
 class ChartServiceTest extends TestCase
 {
     /**
+     * @group unit
      * @dataProvider dataProvider
      */
     public function testGenerateChartDataForRegisteredUsers(array $usersCount): void

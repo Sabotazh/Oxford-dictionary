@@ -20,11 +20,10 @@ class MainController extends AbstractController
     }
 
     /**
-     * @param Security $security
      * @return \Symfony\Component\HttpFoundation\Response
      */
     #[Route('/', methods: ['GET'], name: 'main')]
-    public function __invoke(Security $security): Response
+    public function __invoke(): Response
     {
         $renderParam['form'] = $this->createForm(SearchFormType::class)->createView();
 

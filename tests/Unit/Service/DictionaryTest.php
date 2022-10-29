@@ -4,6 +4,7 @@ namespace App\Tests\Unit\Service;
 
 use App\Builder\OxfordEntryBuilder;
 use App\Client\OxfordClient;
+use App\Exception\ApiExecutionException;
 use App\Exception\DictionaryException;
 use App\Service\Dictionary;
 use App\Tests\Unit\Service\Data\OxfordResponseData;
@@ -14,6 +15,7 @@ use PHPUnit\Framework\TestCase;
 class DictionaryTest extends TestCase
 {
     /**
+     * @group unit
      * @dataProvider dataProvider
      */
     public function testGetDefinitionsAndPronunciations(array $input): void
@@ -39,6 +41,7 @@ class DictionaryTest extends TestCase
     }
 
     /**
+     * @group unit
      * @dataProvider dataProvider
      */
     public function testGetOnlyDefinitions(array $input): void
@@ -64,6 +67,7 @@ class DictionaryTest extends TestCase
     }
 
     /**
+     * @group unit
      * @dataProvider dataProvider
      */
     public function testGetNoResults(array $input): void
@@ -89,6 +93,7 @@ class DictionaryTest extends TestCase
     }
 
     /**
+     * @group unit
      * @dataProvider dataProvider
      */
     public function testThrowsDictionaryException(array $input): void
@@ -107,6 +112,29 @@ class DictionaryTest extends TestCase
         $dictionary = new Dictionary($client, $entityBuilder);
 
         $this->expectException(DictionaryException::class);
+        $dictionary->getEnteries($lang, $word);
+    }
+
+    /**
+     * @group unit
+     * @dataProvider dataProvider
+     */
+    public function testThrowsApiExecutionException(array $input): void
+    {
+        [$lang, $word] = $input;
+
+        $endPoint = sprintf('/entries/%s/%s', $lang, $word);
+
+        $client = \Mockery::mock(OxfordClient::class);
+        $client
+            ->shouldReceive('getData')
+            ->with($endPoint)
+            ->andThrowExceptions([new TransferException()]);
+
+        $entityBuilder = new OxfordEntryBuilder();
+        $dictionary = new Dictionary($client, $entityBuilder);
+
+        $this->expectException(ApiExecutionException::class);
         $dictionary->getEnteries($lang, $word);
     }
 
