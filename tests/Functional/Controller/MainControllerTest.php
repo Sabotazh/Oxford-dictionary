@@ -4,7 +4,7 @@ namespace App\Tests\Functional\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class MainControllerTest extends WebTestCase
+final class MainControllerTest extends WebTestCase
 {
     /**
      * @group functional

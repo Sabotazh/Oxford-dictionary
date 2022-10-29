@@ -8,7 +8,7 @@ use App\Service\FormErrors;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Form\FormFactoryInterface;
 
-class FormErrorsTest extends KernelTestCase
+final class FormErrorsTest extends KernelTestCase
 {
     /**
      * @group unit

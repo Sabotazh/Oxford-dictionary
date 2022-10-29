@@ -24,7 +24,7 @@ class UsersController extends AbstractController
      * @return Response
      */
     #[Route('/admin/users', methods: ['GET'], name: 'admin_users')]
-    public function users(Request $request, UserRepository $repository): Response
+    public function __invoke(Request $request, UserRepository $repository): Response
     {
         $users = $repository->pagination($request->query->getInt('page', 1), 15);
 
@@ -47,7 +47,7 @@ class UsersController extends AbstractController
             $repository->save($user, true);
 
             $this->addFlash('alert_success', 'User has been banned.');
-        } catch (\Exception $exception) {
+        } catch (\Exception | \Throwable $exception) {
             $this->addFlash('alert_error', 'Error banning user.');
         }
 
@@ -68,7 +68,7 @@ class UsersController extends AbstractController
             $repository->save($user, true);
 
             $this->addFlash('alert_success', 'User has been unbanned.');
-        } catch (\Exception $exception) {
+        } catch (\Exception | \Throwable $exception) {
             $this->addFlash('alert_error', 'Error unbanning user.');
         }
 

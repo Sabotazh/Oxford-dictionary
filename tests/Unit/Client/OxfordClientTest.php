@@ -7,7 +7,7 @@ use App\Tests\Unit\Service\Data\OxfordResponseData;
 use App\Type\JsonType;
 use PHPUnit\Framework\TestCase;
 
-class OxfordClientTest extends TestCase
+final class OxfordClientTest extends TestCase
 {
     /**
      * @group unit

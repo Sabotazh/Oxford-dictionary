@@ -62,11 +62,7 @@ class RegistrationController extends AbstractController
 
             $repository->save($user, true);
 
-            return $authenticator->authenticateUser(
-                $user,
-                $formAuthenticator,
-                $request
-            );
+            return $this->redirectToRoute('app_login');
         }
 
         $errors = FormErrors::getErrors($form);

@@ -7,7 +7,7 @@ use App\Repository\SearchRepository;
 use App\Service\SearchService;
 use PHPUnit\Framework\TestCase;
 
-class SearchServiceTest extends TestCase
+final class SearchServiceTest extends TestCase
 {
     /**
      * @group unit

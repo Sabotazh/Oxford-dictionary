@@ -39,23 +39,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(name: 'is_banned', type: 'boolean')]
     private bool $isBanned = false;
 
-    /**
-     * @var datetime $createdAt
-     */
     #[ORM\Column(name: 'created_at', type: 'datetime')]
-    private $createdAt;
+    private \DateTime $createdAt;
 
-    /**
-     * @var datetime $updatedAt
-     */
     #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
-    private $updatedAt;
+    private \DateTime $updatedAt;
 
-    /**
-     * @var datetime $deletedAt
-     */
     #[ORM\Column(name: 'deleted_at', type: 'datetime', nullable: true)]
-    private $deletedAt;
+    private \DateTime $deletedAt;
 
     public function getId(): ?int
     {
@@ -162,7 +153,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return datetime
      */
-    public function getCreatedAt(): string
+    public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
@@ -177,7 +168,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return datetime
      */
-    public function getUpdatedAt(): string
+    public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt;
     }
@@ -192,7 +183,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return datetime
      */
-    public function getDeletedAt(): string
+    public function getDeletedAt(): \DateTime
     {
         return $this->deletedAt;
     }
