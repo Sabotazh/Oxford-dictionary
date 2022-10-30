@@ -12,7 +12,7 @@ use App\Type\JsonType;
 use GuzzleHttp\Exception\TransferException;
 use PHPUnit\Framework\TestCase;
 
-class DictionaryTest extends TestCase
+final class DictionaryTest extends TestCase
 {
     /**
      * @group unit

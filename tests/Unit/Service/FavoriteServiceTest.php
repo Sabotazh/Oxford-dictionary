@@ -8,7 +8,7 @@ use App\Repository\FavoriteRepository;
 use App\Service\FavoriteService;
 use PHPUnit\Framework\TestCase;
 
-class FavoriteServiceTest extends TestCase
+final class FavoriteServiceTest extends TestCase
 {
     /**
      * @group unit

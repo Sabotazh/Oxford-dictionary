@@ -7,7 +7,7 @@ use App\Exception\BuilderNotFoundException;
 use App\Factory\BuilderFactory;
 use PHPUnit\Framework\TestCase;
 
-class BuilderFactoryTest extends TestCase
+final class BuilderFactoryTest extends TestCase
 {
     /**
      * @group unit

@@ -7,7 +7,7 @@ use App\Exception\ClientNotFoundException;
 use App\Factory\ClientFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class ClientFactoryTest extends KernelTestCase
+final class ClientFactoryTest extends KernelTestCase
 {
     /**
      * @group unit

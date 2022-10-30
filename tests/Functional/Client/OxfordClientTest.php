@@ -6,7 +6,7 @@ use App\Client\OxfordClient;
 use App\Type\JsonType;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class OxfordClientTest extends KernelTestCase
+final class OxfordClientTest extends KernelTestCase
 {
     private OxfordClient $client;
 

@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\UX\Chartjs\Builder\ChartBuilder;
 use Symfony\UX\Chartjs\Model\Chart;
 
-class ChartServiceTest extends TestCase
+final class ChartServiceTest extends TestCase
 {
     /**
      * @group unit
