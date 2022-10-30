@@ -5,6 +5,7 @@ namespace App\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Security\Core\Security;
@@ -52,15 +53,14 @@ class SettingFormType extends AbstractType
                     'value'         => $user->getEmail(),
                 ],
             ])
-            ->add('password', TextType::class, [
-                'label' => 'Password',
+            ->add('password', PasswordType::class, [
+                'label'    => 'Password',
                 'required' => false,
                 'constraints' => [
-                    new Length(null, 1, 255),
+                    new Length(null, 8, 255),
                 ],
                 'attr'  => [
                     'placeholder'   => 'Input password',
-                    'value'         => '',
                 ],
             ])
             ->add('submit', SubmitType::class, [
