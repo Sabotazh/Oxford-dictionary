@@ -18,7 +18,7 @@ $('#save-to-favorite').on('click', function(e) {
         url: '/user/favorite/add',
         method: 'POST',
         data: {
-            favorite: $('#search').val()
+            favorite: $('#search input').val()
         }
     }).then((response) => {
         allert(response.message, 'success')
