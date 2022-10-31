@@ -1,15 +1,15 @@
 {% extends 'layout/base.html.twig' %}
 
 {% block body %}
-    <a
-        href="{{ path('export.favorites') }}"
-        class="btn btn-success text-light"
-        data-bs-toggle="tooltip"
-        data-bs-placement="right"
-        title="Export your favourites to Excel"
-        id="export-favorite-to-excel"
-    >Export to Excel <i class="fa-solid fa-file-excel"></i></a>
-
+    {% if favorites|length > 0 %}
+        <a
+            href="{{ path('export.favorites') }}"
+            class="btn btn-success text-light"
+            data-bs-toggle="tooltip"
+            data-bs-placement="right"
+            title="Export your favourites to Excel"
+            id="export-favorite-to-excel"
+        >Export to Excel <i class="fa-solid fa-file-excel"></i></a>
+    {% endif %}
     {% include 'sections/favorites.html.twig' %}
-
 {% endblock %}
