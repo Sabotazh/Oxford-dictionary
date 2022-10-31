@@ -146,6 +146,7 @@ class FavoritesController extends AbstractController
 
     /**
      * @return \Symfony\Component\HttpFoundation\StreamedResponse
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     #[Route('/user/favorites/export', methods: 'GET', name: 'export.favorites')]
     public function exportFavorites(): StreamedResponse
@@ -187,7 +188,7 @@ class FavoritesController extends AbstractController
             }
         );
 
-        $response->headers->set('Content-Type', 'application/vnd.ms-excel');
+        $response->headers->set('Content-Type', 'text/csv');
         $response->headers->set('Content-Disposition', 'attachment;filename="' . $fileName . '"');
         $response->headers->set('Cache-Control','max-age=0');
 
