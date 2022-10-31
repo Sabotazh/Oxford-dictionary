@@ -31,7 +31,7 @@ class MainController extends AbstractController
         $renderParam['history'] = $this->searcheRepository->findBy([], ['id' => 'desc'], 5);
 
         // data for the tags cloud section
-        $renderParam['tags'] = $this->searcheRepository->findBy([], ['id' => 'desc'], 50);
+        $renderParam['tags'] = $this->searcheRepository->findBy([], ['count' => 'desc'], 50);
 
         return $this->render('pages/main.html.twig', $renderParam);
     }
