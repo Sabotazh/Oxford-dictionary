@@ -20,14 +20,15 @@
                     <i class="fa-regular fa-address-card me-2"></i>
                     Profile
                 </a>
-                <a class="dropdown-item" href="{{ path('user_favorites') }}">
-                    <i class="fa-solid fa-heart me-2"></i>
-                    Favorites
-                </a>
                 {% if app.user.isAdmin %}
                     <a class="dropdown-item" href="{{ path('admin_dashboard') }}">
                         <i class="fa-solid fa-gauge-high me-2"></i>
                         Dashboard
+                    </a>
+                {% else %}
+                    <a class="dropdown-item" href="{{ path('user_favorites') }}">
+                        <i class="fa-solid fa-heart me-2"></i>
+                        Favorites
                     </a>
                 {% endif %}
                 <div class="dropdown-divider"></div>
