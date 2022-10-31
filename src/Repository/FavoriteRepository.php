@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Favorite;
+use App\Entity\Search;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -39,28 +41,29 @@ class FavoriteRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Favorite[] Returns an array of Favorite objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('f.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findByUser(int $id): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
 
-//    public function findOneBySomeField($value): ?Favorite
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $sql = "
+            SELECT uf.id, uf.user_id, uf.word_id, s.word
+            FROM user_favorites AS uf
+            LEFT JOIN searches AS s ON uf.word_id = s.id
+            WHERE uf.user_id = $id
+            GROUP BY uf.word_id
+            ";
+        $stmt = $conn->prepare($sql);
+        $resultSet = $stmt->executeQuery();
+
+        return array_map(function (array $el) {
+            $favorite = new Favorite();
+            $favorite
+                ->setId($el['id'])
+                ->setUserId($el['user_id'])
+                ->setWordId($el['word_id'])
+                ->setWord($el['word']);
+
+            return $favorite;
+        }, $resultSet->fetchAllAssociative());
+    }
 }

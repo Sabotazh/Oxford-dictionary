@@ -38,9 +38,21 @@ class Favorite
     #[ORM\Column(name: 'deleted_at', type: 'datetime', nullable: true)]
     private $deletedAt;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Search", mappedBy="favorite")
+     */
+    private string $word;
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getUserId(): ?int
@@ -108,6 +120,18 @@ class Favorite
     public function setDeleteddAt(): self
     {
         $this->deletedAt = new \DateTime('now');
+
+        return $this;
+    }
+
+    public function getWord(): string
+    {
+        return $this->word;
+    }
+
+    public function setWord(string $word): self
+    {
+        $this->word = $word;
 
         return $this;
     }

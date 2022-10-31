@@ -66,8 +66,6 @@ pas: secret
 
 ## Tests
 
-![img](doc/images/test-coverage.png)
-
 Create **.env.test** file and setup it:
 
 ```dotenv

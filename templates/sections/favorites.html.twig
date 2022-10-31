@@ -1,27 +1,26 @@
 <table class="table" id="favorites">
-    <thead>
+    {% if favorites|length > 0 %}
+        <thead>
         <tr>
-            <th scope="col">#</th>
             <th scope="col">Word</th>
             <th scope="col"></th>
         </tr>
-    </thead>
-    <tbody>
-        {% if favorites|length > 0 %}
-            {% for favorite in favorites %}
-                <tr id="row-{{ favorite.id }}">
-                    <th scope="row">{{ favorite.id }}</th>
-                    <td>{{ favorite.wordId }}</td>
-                    <td class="text-end">
-                        <button
+        </thead>
+        <tbody>
+        {% for favorite in favorites %}
+            <tr id="row-{{ favorite.id }}">
+                <td>{{ favorite.word }}</td>
+                <td class="text-end">
+                    <button
                             data-id="{{ favorite.id }}"
                             class="btn btn-danger remove-favorite text-light"
-                        ><i class="fa-solid fa-trash"></i></button>
-                    </td>
-                </tr>
-            {% endfor %}
-        {% else %}
-            <div>No words have been searched yet.</div>
-        {% endif %}
-    </tbody>
+                    ><i class="fa-solid fa-trash"></i></button>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    {% else %}
+        <div>No words have been searched yet.</div>
+    {% endif %}
+
 </table>

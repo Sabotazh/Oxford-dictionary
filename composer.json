@@ -94,7 +94,7 @@
         "app-test": [
             "php bin/phpunit --testdox"
         ],
-        "app-test-init": [
+        "app-test-unit": [
             "php bin/phpunit --testdox --group unit"
         ],
         "app-test-functional": [

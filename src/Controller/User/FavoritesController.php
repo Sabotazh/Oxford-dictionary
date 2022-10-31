@@ -41,7 +41,8 @@ class FavoritesController extends AbstractController
     {
         /** @var User $user */
         $user = $this->security->getUser();
-        $favorites = $this->favoriteRepository->findBy(['user_id' => $user->getId()]);
+        $favorites = $this->favoriteRepository->findByUser($user->getId());
+
         return $this->render('pages/user/favorites.html.twig', [
             'favorites' => $favorites
         ]);
@@ -116,13 +117,31 @@ class FavoritesController extends AbstractController
     #[Route('/user/favorite/delete/{id}', methods: 'DELETE', name: 'delete.favorite')]
     public function deleteFavorite(int $id, ManagerRegistry $doctrine): Response
     {
-        $favorite = $this->favoriteRepository->find($id);
-        $this->favoriteRepository->remove($favorite);
+        try {
+            $favorite = $this->favoriteRepository->find($id);
+            if ($favorite) {
+                $this->favoriteRepository->remove($favorite);
 
-        $entityManager = $doctrine->getManager();
-        $entityManager->flush();
+                $entityManager = $doctrine->getManager();
+                $entityManager->flush();
+            } else {
+                throw new \Exception('Some error has occurred with delete favorite word');
+            }
 
-        return new Response('The word was deleted');
+        } catch (\Exception $exception) {
+            return new JsonResponse([
+                'status' => 'error',
+                'code' => Response::HTTP_BAD_REQUEST,
+                'exception' => $exception,
+                'message' => $exception->getMessage(),
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        return new JsonResponse([
+            'status'    => 'success',
+            'code'      => Response::HTTP_OK,
+            'message'   => 'The word was deleted.',
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -130,34 +149,30 @@ class FavoritesController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      */
     #[Route('/user/favorites/export', methods: 'GET', name: 'export.favorites')]
-    public function exportFavorites(): Response|StreamedResponse
+    public function exportFavorites(): StreamedResponse
     {
+        $spreadsheet = new Spreadsheet();
+        /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $writer = new Xlsx($spreadsheet);
+
+        /** @var User $user */
         $user = $this->security->getUser();
 
-        $favorites = $this->favoriteRepository->findBy(['user_id' => $user->getId()]);
+        $favorites = $this->favoriteRepository->findByUser($user->getId());
 
-        if(count($favorites)) {
+        $sheet->setTitle("My favorites words");
 
-            $spreadsheet = new Spreadsheet();
-            /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
-            $sheet = $spreadsheet->getActiveSheet();
-    
-            $writer = new Xlsx($spreadsheet);
-
-            $sheet->setTitle("My favorites words");
-
-            foreach ($favorites as $key => $value) {
-                $index = ++$key;
-                $sheet->setCellValue('A' . $index, $value->getWordId());
-                $sheet->setCellValue('B' . $index, $_SERVER['SERVER_NAME'] . self::LINK . $value->getWordId());
-            }
-
-            return $this->generateFile($writer, $this->fileName);
-
-        } else {
-            $this->addFlash('alert_error', 'Error export file. Favorites does not exist.');
-            return $this->redirectToRoute('user_favorites');
+        foreach ($favorites as $key => $value) {
+            /** @var Favorite $value */
+            $index = ++$key;
+            $sheet->setCellValue('A' . $index, $value->getWordId());
+            $sheet->setCellValue('B' . $index, $value->getWord());
+            $sheet->setCellValue('C' . $index, $_SERVER['SERVER_NAME'] . self::LINK . $value->getWord());
         }
+
+        return $this->generateFile($writer, $this->fileName);
     }
 
     /**
