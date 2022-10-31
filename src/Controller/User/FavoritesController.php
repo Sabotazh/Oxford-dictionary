@@ -127,30 +127,37 @@ class FavoritesController extends AbstractController
 
     /**
      * @return \Symfony\Component\HttpFoundation\StreamedResponse
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     #[Route('/user/favorites/export', methods: 'GET', name: 'export.favorites')]
-    public function exportFavorites(): StreamedResponse
+    public function exportFavorites(): Response|StreamedResponse
     {
-        $spreadsheet = new Spreadsheet();
-        /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
-        $sheet = $spreadsheet->getActiveSheet();
-
-        $writer = new Xlsx($spreadsheet);
-
-        /** @var User $user */
         $user = $this->security->getUser();
 
         $favorites = $this->favoriteRepository->findBy(['user_id' => $user->getId()]);
 
-        $sheet->setTitle("My favorites words");
+        if(count($favorites)) {
 
-        foreach ($favorites as $key => $value) {
-            $index = ++$key;
-            $sheet->setCellValue('A' . $index, $value->getWordId());
-            $sheet->setCellValue('B' . $index, $_SERVER['SERVER_NAME'] . self::LINK . $value->getWordId());
+            $spreadsheet = new Spreadsheet();
+            /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
+            $sheet = $spreadsheet->getActiveSheet();
+    
+            $writer = new Xlsx($spreadsheet);
+
+            $sheet->setTitle("My favorites words");
+
+            foreach ($favorites as $key => $value) {
+                $index = ++$key;
+                $sheet->setCellValue('A' . $index, $value->getWordId());
+                $sheet->setCellValue('B' . $index, $_SERVER['SERVER_NAME'] . self::LINK . $value->getWordId());
+            }
+
+            return $this->generateFile($writer, $this->fileName);
+
+        } else {
+            $this->addFlash('alert_error', 'Error export file. Favorites does not exist.');
+            return $this->redirectToRoute('user_favorites');
         }
-
-        return $this->generateFile($writer, $this->fileName);
     }
 
     /**
@@ -166,7 +173,7 @@ class FavoritesController extends AbstractController
             }
         );
 
-        $response->headers->set('Content-Type', 'application/vnd.ms-excel');
+        $response->headers->set('Content-Type', 'text/csv');
         $response->headers->set('Content-Disposition', 'attachment;filename="' . $fileName . '"');
         $response->headers->set('Cache-Control','max-age=0');
 
