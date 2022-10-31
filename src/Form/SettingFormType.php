@@ -4,11 +4,13 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Security\Core\Security;
 
 class SettingFormType extends AbstractType
@@ -34,18 +36,19 @@ class SettingFormType extends AbstractType
                 'label' => 'Name',
                 'required' => true,
                 'constraints' => [
-                    new Length(null, 1, 255),
+                    new Length(null, 3, 255),
                 ],
                 'attr'  => [
                     'placeholder'   => 'Input name',
                     'value'         => $user->getName(),
                 ],
             ])
-            ->add('email', TextType::class, [
+            ->add('email', EmailType::class, [
                 'label' => 'Email',
                 'required' => true,
                 'constraints' => [
-                    new Length(null, 1, 255),
+                    new Email(),
+                    new Length(null, 3, 255),
                 ],
                 'attr'  => [
                     'placeholder'   => 'Input email',
