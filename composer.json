@@ -73,6 +73,35 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "app-init": [
+            "composer install",
+            "yarn install",
+            "yarn encore dev",
+            "php bin/console doctrine:database:create",
+            "php bin/console doctrine:migrations:migrate -n",
+            "php bin/console doctrine:fixtures:load -n"
+        ],
+        "app-serve": [
+            "symfony server:start"
+        ],
+        "app-test-init": [
+            "php bin/console doctrine:database:drop --force --env=test || true",
+            "php bin/console doctrine:database:create --env=test",
+            "php bin/console doctrine:migrations:migrate -n --env=test",
+            "php bin/console doctrine:fixtures:load -n --env=test"
+        ],
+        "app-test": [
+            "php bin/phpunit --testdox"
+        ],
+        "app-test-init": [
+            "php bin/phpunit --testdox --group unit"
+        ],
+        "app-test-functional": [
+            "php bin/phpunit --testdox --group functional"
+        ],
+        "app-test-coverage": [
+            "php bin/phpunit --testdox --coverage-html coverage"
         ]
     },
     "conflict": {
