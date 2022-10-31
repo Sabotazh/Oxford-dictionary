@@ -44,7 +44,7 @@ class ProfileController extends AbstractController
     {
         /** @var User $user */
         $user = $this->security->getUser();
-        $favorites = $this->favoriteRepository->findBy(['user_id' => $user->getId()]);
+        $favorites = $this->favoriteRepository->findByUser($user->getId());
 
         $form = $this->createForm(SettingFormType::class)->createView();
 
