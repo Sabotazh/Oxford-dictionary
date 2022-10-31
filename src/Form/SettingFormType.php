@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -12,11 +13,8 @@ use Symfony\Component\Security\Core\Security;
 
 class SettingFormType extends AbstractType
 {
-    private $security;
-    /**
-     * @var Security
-     * @var FavoriteRepository
-     */
+    private Security $security;
+
     public function __construct(Security $security)
     {
         $this->security = $security;
@@ -27,6 +25,7 @@ class SettingFormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        /** @var User $user */
         $user = $this->security->getUser();
         $builder
             ->setAction('/user/profile')

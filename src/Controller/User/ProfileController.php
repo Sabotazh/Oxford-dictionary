@@ -2,6 +2,7 @@
 
 namespace App\Controller\User;
 
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,9 +19,12 @@ class ProfileController extends AbstractController
     private Security $security;
     private FavoriteRepository $favoriteRepository;
     private UserRepository $userRepository;
+
     /**
-     * @var Security
-     * @var FavoriteRepository
+     *
+     * @param Security $security
+     * @param FavoriteRepository $favoriteRepository
+     * @param UserRepository $userRepository
      */
     public function __construct(
         Security $security,
@@ -38,6 +42,7 @@ class ProfileController extends AbstractController
     #[Route('user/profile', methods: 'GET', name: 'user_profile')]
     public function profile(): Response
     {
+        /** @var User $user */
         $user = $this->security->getUser();
         $favorites = $this->favoriteRepository->findBy(['user_id' => $user->getId()]);
 
@@ -61,6 +66,7 @@ class ProfileController extends AbstractController
         UserPasswordHasherInterface $hasher
     ): Response
     {
+        /** @var User $user */
         $user = $this->security->getUser();
         $data = $request->request->all();
 

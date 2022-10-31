@@ -40,7 +40,7 @@ class OxfordClient implements ClientInterface
     }
 
     /**
-     * @return array
+     * @return array<string, string>
      */
     private function getHeaderOptions(): array
     {
