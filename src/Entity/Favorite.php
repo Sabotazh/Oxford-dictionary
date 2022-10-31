@@ -21,19 +21,19 @@ class Favorite
     private ?int $word_id = null;
 
     /**
-     * @var datetime $createdAt
+     * @var \DateTime $createdAt
      */
     #[ORM\Column(name: 'created_at', type: 'datetime')]
     private $createdAt;
 
     /**
-     * @var datetime $updatedAt
+     * @var \DateTime $updatedAt
      */
     #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
     private $updatedAt;
 
     /**
-     * @var datetime $deletedAt
+     * @var \DateTime $deletedAt
      */
     #[ORM\Column(name: 'deleted_at', type: 'datetime', nullable: true)]
     private $deletedAt;
@@ -55,12 +55,12 @@ class Favorite
         return $this;
     }
 
-    public function getWordId(): ?string
+    public function getWordId(): ?int
     {
         return $this->word_id;
     }
 
-    public function setWordId(string $word_id): self
+    public function setWordId(int $word_id): self
     {
         $this->word_id = $word_id;
 
@@ -68,9 +68,9 @@ class Favorite
     }
 
     /**
-     * @return datetime
+     * @return \DateTime
      */
-    public function getCreatedAt(): string
+    public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
@@ -83,9 +83,9 @@ class Favorite
     }
 
     /**
-     * @return datetime
+     * @return \DateTime
      */
-    public function getUpdatedAt(): string
+    public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt;
     }
@@ -98,9 +98,9 @@ class Favorite
     }
 
     /**
-     * @return datetime
+     * @return \DateTime
      */
-    public function getDeletedAt(): string
+    public function getDeletedAt(): \DateTime
     {
         return $this->deletedAt;
     }

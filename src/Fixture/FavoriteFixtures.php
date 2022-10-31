@@ -11,27 +11,22 @@ use App\Repository\UserRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Faker\Factory as Faker;
 
 class FavoriteFixtures extends Fixture implements DependentFixtureInterface
 {
-
     private FavoriteRepository $favoriteRepository;
     private UserRepository $userRepository;
     private SearchRepository $searcheRepository;
-    private Faker $faker;
 
     public function __construct(
         FavoriteRepository $favoriteRepository,
         UserRepository     $userRepository,
         SearchRepository   $searcheRepository,
-        Faker              $faker
     )
     {
         $this->favoriteRepository = $favoriteRepository;
         $this->userRepository = $userRepository;
         $this->searcheRepository = $searcheRepository;
-        $this->faker = $faker;
     }
 
     public function load(ObjectManager $manager)

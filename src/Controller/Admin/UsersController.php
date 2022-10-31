@@ -11,13 +11,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UsersController extends AbstractController
 {
-    private UserRepository $userRepository;
-
-    public function __construct(UserRepository $userRepository)
-    {
-       $this->userRepository = $userRepository;
-    }
-
     /**
      * @param Request $request
      * @param UserRepository $repository

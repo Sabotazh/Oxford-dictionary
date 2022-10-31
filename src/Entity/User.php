@@ -151,7 +151,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return datetime
+     * @return \DateTime
      */
     public function getCreatedAt(): \DateTime
     {
@@ -166,7 +166,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return datetime
+     * @return \DateTime
      */
     public function getUpdatedAt(): \DateTime
     {
@@ -181,7 +181,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return datetime
+     * @return \DateTime
      */
     public function getDeletedAt(): \DateTime
     {

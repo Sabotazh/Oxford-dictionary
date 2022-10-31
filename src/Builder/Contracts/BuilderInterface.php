@@ -7,8 +7,8 @@ use App\Entity\Entry;
 interface BuilderInterface
 {
     /**
-     * @param $data
+     * @param mixed $data
      * @return Entry
      */
-    public function build($data): Entry;
+    public function build(mixed $data): Entry;
 }

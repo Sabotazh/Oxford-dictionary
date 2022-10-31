@@ -20,7 +20,7 @@ final class SearchRepositoryTest extends KernelTestCase
      */
     public function testRemoveSerchedWord(): void
     {
-        /** @var Search $user*/
+        /** @var Search $word*/
         $word = $this->searchRepository->findAll()[0];
 
         $this->searchRepository->remove($word, true);

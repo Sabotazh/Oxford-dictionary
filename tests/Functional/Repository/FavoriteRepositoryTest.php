@@ -14,7 +14,6 @@ final class FavoriteRepositoryTest extends KernelTestCase
     protected function setUp(): void
     {
         $this->favoriteRepository = static::getContainer()->get(FavoriteRepository::class);
-        $this->entityManager = static::getContainer()->get(ManagerRegistry::class);
     }
 
     /**
@@ -22,7 +21,7 @@ final class FavoriteRepositoryTest extends KernelTestCase
      */
     public function testRemoveFavorite(): void
     {
-        /** @var Favorite $user*/
+        /** @var Favorite $favorite*/
         $favorite = $this->favoriteRepository->findAll()[0];
 
         $this->favoriteRepository->remove($favorite, true);

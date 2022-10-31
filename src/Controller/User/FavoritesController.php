@@ -3,6 +3,7 @@
 namespace App\Controller\User;
 
 use App\Entity\Favorite;
+use App\Entity\User;
 use App\Exception\FavoriteException;
 use App\Repository\FavoriteRepository;
 use App\Repository\SearchRepository;
@@ -38,6 +39,7 @@ class FavoritesController extends AbstractController
     #[Route('/user/favorites', methods: 'GET', name: 'user_favorites')]
     public function favorites(): Response
     {
+        /** @var User $user */
         $user = $this->security->getUser();
         $favorites = $this->favoriteRepository->findBy(['user_id' => $user->getId()]);
         return $this->render('pages/user/favorites.html.twig', [
@@ -61,6 +63,7 @@ class FavoritesController extends AbstractController
     ): JsonResponse
     {
         $word = $request->request->get('favorite');
+        /** @var User $user */
         $user = $this->security->getUser();
         $history = $searcheRepository->findOneBy(['word' => $word]);
 
@@ -134,6 +137,7 @@ class FavoritesController extends AbstractController
 
         $writer = new Xlsx($spreadsheet);
 
+        /** @var User $user */
         $user = $this->security->getUser();
 
         $favorites = $this->favoriteRepository->findBy(['user_id' => $user->getId()]);

@@ -7,22 +7,19 @@ use App\Repository\UserRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory as Faker;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Faker\Generator;
 
 class UserFixtures extends Fixture
 {
     private UserRepository $repository;
-    private UserPasswordHasherInterface $hasher;
-    private $faker;
+    private Generator $faker;
 
     public function __construct(
         UserRepository $repository,
-        UserPasswordHasherInterface $hasher,
         Faker $faker
     )
     {
         $this->repository = $repository;
-        $this->hasher = $hasher;
         $this->faker = $faker::create();
     }
 
