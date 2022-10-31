@@ -17,7 +17,7 @@ class Favorite
     #[ORM\Column(type: 'integer')]
     private ?int $user_id = null;
 
-    #[ORM\Column(type: 'integer', length: 255, unique: true)]
+    #[ORM\Column(type: 'integer', length: 255, unique: false)]
     private ?int $word_id = null;
 
     /**
