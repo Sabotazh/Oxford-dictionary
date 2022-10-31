@@ -16,16 +16,15 @@
         <div class="dropdown-menu dropdown-menu-end pt-0">
 
             {% if app.user %}
-                {% if app.user.isUser %}
-                    <a class="dropdown-item" href="{{ path('user_profile') }}">
-                        <i class="fa-regular fa-address-card me-2"></i>
-                        Profile
-                    </a>
-                    <a class="dropdown-item" href="{{ path('user_favorites') }}">
-                        <i class="fa-solid fa-heart me-2"></i>
-                        Favorites
-                    </a>
-                {% elseif app.user.isAdmin %}
+                <a class="dropdown-item" href="{{ path('user_profile') }}">
+                    <i class="fa-regular fa-address-card me-2"></i>
+                    Profile
+                </a>
+                <a class="dropdown-item" href="{{ path('user_favorites') }}">
+                    <i class="fa-solid fa-heart me-2"></i>
+                    Favorites
+                </a>
+                {% if app.user.isAdmin %}
                     <a class="dropdown-item" href="{{ path('admin_dashboard') }}">
                         <i class="fa-solid fa-gauge-high me-2"></i>
                         Dashboard
