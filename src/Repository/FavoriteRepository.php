@@ -50,7 +50,7 @@ class FavoriteRepository extends ServiceEntityRepository
             FROM user_favorites AS uf
             LEFT JOIN searches AS s ON uf.word_id = s.id
             WHERE uf.user_id = $id
-            GROUP BY uf.word_id
+            GROUP BY uf.id, uf.word_id
             ";
         $stmt = $conn->prepare($sql);
         $resultSet = $stmt->executeQuery();
